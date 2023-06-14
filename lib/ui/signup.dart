@@ -12,9 +12,20 @@ class _SignupState extends State<Signup> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final FocusNode _focusNodeEmail = FocusNode();
+  final FocusNode _focusNodeFullName = FocusNode();
   final FocusNode _focusNodePassword = FocusNode();
   final FocusNode _focusNodeConfirmPassword = FocusNode();
-  final TextEditingController _controllerUsername = TextEditingController();
+
+  String? selectedBloodGroup;
+  String? birthDateInString;
+  DateTime? birthDate;
+  bool isDateSelected= false;
+
+
+
+
+  final TextEditingController _controllerPhoneNumber = TextEditingController();
+  final TextEditingController _controllerFullName = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerConFirmPassword =
@@ -34,13 +45,6 @@ class _SignupState extends State<Signup> {
           child: Column(
             children: [
               const SizedBox(height: 100),
-              const Text(
-                "Register",
-                style: TextStyle(
-                  fontSize: 40,
-                  color: Colors.black,
-                ),
-              ),
               const SizedBox(height: 10),
               const Text(
                 "Create your account",
@@ -51,10 +55,37 @@ class _SignupState extends State<Signup> {
               ),
               const SizedBox(height: 35),
               TextFormField(
-                controller: _controllerUsername,
+                controller: _controllerPhoneNumber,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Phone Number",
+                  prefixIcon: const Icon(Icons.numbers),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter a valid phone number.";
+                  } else if (value.length != 10) {
+                    return "Phone number is invalid."; }
+                  else if (_boxAccounts.containsKey(value)) {
+                    return "Phone number is already registered.";
+                  }
+                  return null;
+                },
+                onEditingComplete: () => _focusNodeFullName.requestFocus(),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: _controllerFullName,
+                focusNode: _focusNodeFullName,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
-                  labelText: "Username",
+                  labelText: "Full Name",
                   prefixIcon: const Icon(Icons.person_outline),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -65,11 +96,10 @@ class _SignupState extends State<Signup> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter username.";
-                  } else if (_boxAccounts.containsKey(value)) {
-                    return "Username is already registered.";
+                    return "Please enter email.";
+                  } else if (!(value.contains('@') && value.contains('.'))) {
+                    return "Invalid email";
                   }
-
                   return null;
                 },
                 onEditingComplete: () => _focusNodeEmail.requestFocus(),
@@ -98,6 +128,65 @@ class _SignupState extends State<Signup> {
                   return null;
                 },
                 onEditingComplete: () => _focusNodePassword.requestFocus(),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                      child: new Icon(Icons.calendar_today),
+                      onTap: ()async{
+                        final datePick= await showDatePicker(
+                            context: context,
+                            initialDate: new DateTime.now(),
+                            firstDate: new DateTime(1900),
+                            lastDate: new DateTime(2100)
+                        );
+                        if(datePick!=null && datePick!=birthDate){
+                          setState(() {
+                            birthDate=datePick;
+                            isDateSelected=true;
+                            // put it here
+                            birthDateInString =
+                            "${birthDate?.month}/"
+                                "${birthDate?.day}/"
+                                "${birthDate?.year}";
+                          });
+                        }
+                      }
+                  ),
+                  Container(decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: DropdownButton<String>(
+                        value: selectedBloodGroup,
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedBloodGroup = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          'A+',
+                          'B+',
+                          'O+',
+                          'AB+',
+                          'A-',
+                          'B-',
+                          'O-',
+                          'AB-'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
+                ]
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -182,7 +271,7 @@ class _SignupState extends State<Signup> {
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
                         _boxAccounts.put(
-                          _controllerUsername.text,
+                          _controllerPhoneNumber.hashCode,
                           _controllerConFirmPassword.text,
                         );
 
@@ -230,7 +319,8 @@ class _SignupState extends State<Signup> {
     _focusNodeEmail.dispose();
     _focusNodePassword.dispose();
     _focusNodeConfirmPassword.dispose();
-    _controllerUsername.dispose();
+    _controllerPhoneNumber.dispose();
+    _controllerFullName.dispose();
     _controllerEmail.dispose();
     _controllerPassword.dispose();
     _controllerConFirmPassword.dispose();
