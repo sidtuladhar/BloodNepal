@@ -1,6 +1,7 @@
+import 'package:blood_nepal/ui/loading.dart';
 import 'package:flutter/material.dart';
 
-import 'ui/login.dart';
+import 'ui/start.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -13,7 +14,7 @@ class MainApp extends StatelessWidget {
           seedColor: const Color(0xFFEA0000),
         ),
       ),
-      home: const Login(),
+      home: const Start(),
     );
   }
 }

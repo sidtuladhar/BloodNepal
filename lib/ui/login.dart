@@ -26,7 +26,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     if (_boxLogin.get("loginStatus") ?? false) {
       return Home();
     }
@@ -42,16 +41,10 @@ class _LoginState extends State<Login> {
               const SizedBox(height: 60),
               Icon(Icons.bloodtype_outlined, color: Colors.red[900], size: 150),
               const SizedBox(height: 10),
-              const Text(
-                "Blood Nepal",
-                style: TextStyle(
-                  fontSize: 40,
-                  color: Colors.black,
-                  fontFamily: "Domine"
-                ),
-                selectionColor: Colors.black
-
-              ),
+              const Text("Blood Nepal",
+                  style: TextStyle(
+                      fontSize: 40, color: Colors.black, fontFamily: "Domine"),
+                  selectionColor: Colors.black),
               const SizedBox(height: 60),
               TextFormField(
                 controller: _controllerUsername,
@@ -164,9 +157,10 @@ class _LoginState extends State<Login> {
                 ],
               ),
               const SizedBox(height: 50),
-              const Text("In case of an emergency requiring blood as soon as possible, "
-                "please call 1234567890.",
-              style: TextStyle(fontSize: 15, height: 1.2))
+              const Text(
+                  "In case of an emergency requiring blood as soon as possible, "
+                  "please call 1234567890.",
+                  style: TextStyle(fontSize: 15, height: 1.2))
             ],
           ),
         ),
