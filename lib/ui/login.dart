@@ -30,7 +30,6 @@ class _LoginState extends State<Login> {
     if (_boxLogin.get("loginStatus") ?? false) {
       return Home();
     }
-    print('hi');
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,

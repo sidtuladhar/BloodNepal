@@ -12,7 +12,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Welcome"),
+        title: Text(_boxLogin.get("fullName")),
         elevation: 0,
         actions: [
           Padding(

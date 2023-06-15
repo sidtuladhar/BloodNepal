@@ -20,9 +20,7 @@ class _SignupState extends State<Signup> {
   String? birthDateInString;
   DateTime? birthDate;
   bool isDateSelected= false;
-
-
-
+  String initValue="Date of Birth";
 
   final TextEditingController _controllerPhoneNumber = TextEditingController();
   final TextEditingController _controllerFullName = TextEditingController();
@@ -59,7 +57,7 @@ class _SignupState extends State<Signup> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: "Phone Number",
-                  prefixIcon: const Icon(Icons.numbers),
+                  prefixIcon: Icon(Icons.numbers, color: Colors.grey[600]),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -86,7 +84,9 @@ class _SignupState extends State<Signup> {
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   labelText: "Full Name",
-                  prefixIcon: const Icon(Icons.person_outline),
+                  prefixIcon: Icon(
+                      Icons.person_outline,
+                      color: Colors.grey[600]),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -111,7 +111,9 @@ class _SignupState extends State<Signup> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: "Email",
-                  prefixIcon: const Icon(Icons.email_outlined),
+                  prefixIcon: Icon(
+                      Icons.email_outlined,
+                      color: Colors.grey[600]),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -126,67 +128,96 @@ class _SignupState extends State<Signup> {
                     return "Invalid email";
                   }
                   return null;
-                },
-                onEditingComplete: () => _focusNodePassword.requestFocus(),
-              ),
+                }),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                      child: new Icon(Icons.calendar_today),
-                      onTap: ()async{
-                        final datePick= await showDatePicker(
-                            context: context,
-                            initialDate: new DateTime.now(),
-                            firstDate: new DateTime(1900),
-                            lastDate: new DateTime(2100)
-                        );
-                        if(datePick!=null && datePick!=birthDate){
-                          setState(() {
-                            birthDate=datePick;
-                            isDateSelected=true;
-                            // put it here
-                            birthDateInString =
-                            "${birthDate?.month}/"
-                                "${birthDate?.day}/"
-                                "${birthDate?.year}";
-                          });
-                        }
-                      }
-                  ),
-                  Container(decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: DropdownButton<String>(
-                        value: selectedBloodGroup,
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedBloodGroup = newValue!;
-                          });
-                        },
-                        items: <String>[
-                          'A+',
-                          'B+',
-                          'O+',
-                          'AB+',
-                          'A-',
-                          'B-',
-                          'O-',
-                          'AB-'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                  Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [GestureDetector(
+                            child: Icon(
+                                Icons.date_range_outlined,
+                                color: Colors.grey[600],
+                                size: 25.0),
+                            onTap: ()async{
+                              final datePick= await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now()
+                              );
+                              if(datePick!=null && datePick!=birthDate){
+                                setState(() {
+                                  birthDate=datePick;
+                                  isDateSelected=true;
+                                  birthDateInString =
+                                  "${birthDate?.day}/${birthDate?.month}/"
+                                      "${birthDate?.year}";
+                                });
+                              }
+                            }
+                          ),
+                        const SizedBox(width: 10.0),
+                        Text(isDateSelected ? " $birthDateInString ":initValue,
+                        style: TextStyle(
+                            fontSize: 17,
+                            letterSpacing: 1.2,
+                            color: Colors.grey[700]),
+                        ),
+                        const SizedBox(width: 30.0)
+                        ],
                       )),
-                ]
+                  Container(decoration: const BoxDecoration(
+                    border: Border.symmetric(horizontal: BorderSide(),
+                        vertical: BorderSide()),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))
+                  ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 1),
+                  child:
+                  Row(children: [
+                    Icon(
+                        Icons.bloodtype_outlined,
+                        color: Colors.grey[600],
+                        size: 25),
+                    const SizedBox(width: 15.0),
+                    DropdownButton<String>(
+                      value: selectedBloodGroup,
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedBloodGroup = newValue!;
+                        });
+                      },
+                      items: <String>[
+                        'A+',
+                        'B+',
+                        'O+',
+                        'AB+',
+                        'A-',
+                        'B-',
+                        'O-',
+                        'AB-',
+                        'N/A'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(width: 10.0)
+                  ]))]
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -196,7 +227,9 @@ class _SignupState extends State<Signup> {
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(
                   labelText: "Password",
-                  prefixIcon: const Icon(Icons.password_outlined),
+                  prefixIcon: Icon(
+                      Icons.password_outlined,
+                      color: Colors.grey[600]),
                   suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
@@ -232,7 +265,9 @@ class _SignupState extends State<Signup> {
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
-                  prefixIcon: const Icon(Icons.password_outlined),
+                  prefixIcon: Icon(
+                      Icons.password_outlined,
+                      color: Colors.grey[600]),
                   suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
