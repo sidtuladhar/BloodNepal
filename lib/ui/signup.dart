@@ -20,7 +20,6 @@ class _SignupState extends State<Signup> {
   String? birthDateInString;
   DateTime? birthDate;
   bool isDateSelected = false;
-  String initValue = "Date of Birth";
 
   final TextEditingController _controllerPhoneNumber = TextEditingController();
   final TextEditingController _controllerFullName = TextEditingController();
@@ -96,9 +95,9 @@ class _SignupState extends State<Signup> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter email.";
-                  } else if (!(value.contains('@') && value.contains('.'))) {
-                    return "Invalid email";
+                    return "Please enter your full name.";
+                  } else if (!(value.contains(' '))) {
+                    return "Invalid full name.";
                   }
                   return null;
                 },
@@ -125,7 +124,7 @@ class _SignupState extends State<Signup> {
                     if (value == null || value.isEmpty) {
                       return "Please enter email.";
                     } else if (!(value.contains('@') && value.contains('.'))) {
-                      return "Invalid email";
+                      return "Invalid email.";
                     }
                     return null;
                   }),
@@ -149,14 +148,16 @@ class _SignupState extends State<Signup> {
                                 Icon(Icons.date_range_outlined,
                                     color: Colors.grey[600], size: 25.0),
                                 const SizedBox(width: 10.0),
-                                Text(
-                                    isDateSelected
-                                        ? " $birthDateInString "
-                                        : initValue,
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        letterSpacing: 1.2,
-                                        color: Colors.grey[700]))
+                                SizedBox(
+                                  width: 110,
+                                  child: Text(
+                                      isDateSelected
+                                          ? " $birthDateInString "
+                                          : "Date of Birth",
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          color: Colors.grey[700])),
+                                )
                               ],
                             ),
                             onTap: () async {

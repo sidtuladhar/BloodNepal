@@ -38,10 +38,10 @@ class _InfoState extends State<Info> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color(0xffEFF0FA),
+          backgroundColor: Colors.red[700],
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 20, top: 10),
+              padding: const EdgeInsets.only(right: 20, top: 5),
               child: TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -52,7 +52,7 @@ class _InfoState extends State<Info> {
                   child: const Text(
                     'Login',
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   )),
