@@ -192,7 +192,7 @@ class _LoginState extends State<Login> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 50),
+                            const SizedBox(height: 20),
                             const Text(
                                 "In case of an emergency requiring blood as soon as possible, "
                                 "please call 1234567890.",

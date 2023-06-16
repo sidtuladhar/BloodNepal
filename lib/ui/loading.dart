@@ -51,8 +51,8 @@ Future<void> loadAssets(context) async {
   await Future.delayed(const Duration(seconds: 2));
 
   // Load images
-  const image1 = AssetImage('assets/images/blood.jpg');
-  const image2 = AssetImage('assets/images/donation.jpg');
+  const image1 = AssetImage('assets/images/doctor.jpg');
+  const image2 = AssetImage('assets/images/donate.jpg');
   const image3 = AssetImage('assets/images/patient.jpg');
 
   // Pre-cache images

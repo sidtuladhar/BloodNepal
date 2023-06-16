@@ -16,7 +16,7 @@ class _SignupState extends State<Signup> {
   final FocusNode _focusNodePassword = FocusNode();
   final FocusNode _focusNodeConfirmPassword = FocusNode();
 
-  String? selectedBloodGroup;
+  String? _selectedBloodGroup;
   String? birthDateInString;
   DateTime? birthDate;
   bool isDateSelected = false;
@@ -42,8 +42,7 @@ class _SignupState extends State<Signup> {
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
             children: [
-              const SizedBox(height: 100),
-              const SizedBox(height: 10),
+              const SizedBox(height: 70),
               const Text(
                 "Create your account",
                 style: TextStyle(
@@ -142,11 +141,24 @@ class _SignupState extends State<Signup> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 12.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         GestureDetector(
-                            child: Icon(Icons.date_range_outlined,
-                                color: Colors.grey[600], size: 25.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.date_range_outlined,
+                                    color: Colors.grey[600], size: 25.0),
+                                const SizedBox(width: 10.0),
+                                Text(
+                                    isDateSelected
+                                        ? " $birthDateInString "
+                                        : initValue,
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        letterSpacing: 1.2,
+                                        color: Colors.grey[700]))
+                              ],
+                            ),
                             onTap: () async {
                               final datePick = await showDatePicker(
                                   context: context,
@@ -163,54 +175,67 @@ class _SignupState extends State<Signup> {
                                 });
                               }
                             }),
-                        const SizedBox(width: 10.0),
-                        Text(
-                          isDateSelected ? " $birthDateInString " : initValue,
-                          style: TextStyle(
-                              fontSize: 17,
-                              letterSpacing: 1.2,
-                              color: Colors.grey[700]),
-                        ),
-                        const SizedBox(width: 30.0)
                       ],
                     )),
                 Container(
-                    decoration: const BoxDecoration(
-                        border: Border.symmetric(
-                            horizontal: BorderSide(), vertical: BorderSide()),
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 1),
-                    child: Row(children: [
-                      Icon(Icons.bloodtype_outlined,
-                          color: Colors.grey[600], size: 25),
-                      const SizedBox(width: 15.0),
-                      DropdownButton<String>(
-                        value: selectedBloodGroup,
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedBloodGroup = newValue!;
-                          });
-                        },
-                        items: <String>[
-                          'A+',
-                          'B+',
-                          'O+',
-                          'AB+',
-                          'A-',
-                          'B-',
-                          'O-',
-                          'AB-',
-                          'N/A'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1.0,
                       ),
-                      const SizedBox(width: 10.0)
-                    ]))
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    height: 50,
+                    width: 155,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 10),
+                        Icon(Icons.bloodtype_outlined,
+                            color: Colors.grey[600], size: 25.0),
+                        const SizedBox(width: 5),
+                        SizedBox(
+                          width: 110,
+                          child: DropdownButtonFormField<String>(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select';
+                              }
+                              return null;
+                            },
+                            items: <String>[
+                              'A+',
+                              'B+',
+                              'O+',
+                              'AB+',
+                              'A-',
+                              'B-',
+                              'O-',
+                              'AB-',
+                              'N/A'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,
+                                    style: const TextStyle(fontSize: 17),
+                                    textAlign: TextAlign.center),
+                              );
+                            }).toList(),
+                            value: _selectedBloodGroup,
+                            hint: const Text(
+                              'Blood type',
+                              style: TextStyle(fontSize: 17),
+                              textAlign: TextAlign.left,
+                            ),
+                            onChanged: (newValue) {
+                              _selectedBloodGroup = newValue!;
+                              setState(() {
+                                newValue;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    )),
               ]),
               const SizedBox(height: 10),
               TextFormField(
@@ -286,7 +311,7 @@ class _SignupState extends State<Signup> {
                   return null;
                 },
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               Column(
                 children: [
                   ElevatedButton(
