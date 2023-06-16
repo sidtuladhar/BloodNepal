@@ -50,7 +50,7 @@ class _InfoState extends State<Info> {
                     );
                   },
                   child: const Text(
-                    'Skip',
+                    'Login',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
