@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'login.dart';
+
 void main() {
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -37,16 +39,23 @@ class _InfoState extends State<Info> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: const Color(0xffEFF0FA),
-          actions: const <Widget>[
+          actions: <Widget>[
             Padding(
-              padding: EdgeInsets.only(right: 20, top: 20),
-              child: Text(
-                'Skip',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400),
-              ),
+              padding: const EdgeInsets.only(right: 20, top: 10),
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Login()),
+                    );
+                  },
+                  child: const Text(
+                    'Skip',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  )),
             )
           ],
         ),
@@ -63,18 +72,22 @@ class _InfoState extends State<Info> {
                 children: <Widget>[
                   makePage(
                       image: 'assets/images/donate.jpg',
-                      title: 'Welcome to Blood Nepal',
+                      title: 'Welcome to \n Blood Nepal',
                       content:
-                          'We are here to help you find blood donors in Nepal.'),
+                          'We are here to help you track your blood donations.'),
                   makePage(
                       reverse: true,
                       image: 'assets/images/patient.jpg',
-                      title: 'Donate Blood',
-                      content: 'Donate blood and save lives.'),
+                      title: 'Donate blood and save lives',
+                      content: 'One blood donation can potentially '
+                          'save up to three lives.'),
                   makePage(
                       image: 'assets/images/doctor.jpg',
-                      title: 'Find Blood Donors',
-                      content: 'Find blood donors near you.')
+                      title: 'Blood donation \nhas many benefits',
+                      content:
+                          'Donating blood reduces the risk of heart disease, '
+                          'lowers the risk of cancer, burns calories, '
+                          'and improves liver health.'),
                 ]),
             Container(
               margin: const EdgeInsets.only(bottom: 60),
@@ -106,15 +119,19 @@ Widget makePage({image, title, content, reverse = false}) {
             : const SizedBox(),
         Text(
           title,
+          textAlign: TextAlign.center,
           style: const TextStyle(
               color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
         Text(
           content,
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.start,
           style: const TextStyle(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400),
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              height: 1.2),
         ),
         reverse
             ? Column(
@@ -139,7 +156,7 @@ Widget _indicator(bool isActive) {
     width: isActive ? 30 : 6,
     margin: const EdgeInsets.only(right: 5),
     decoration: BoxDecoration(
-        color: Colors.black, borderRadius: BorderRadius.circular(5)),
+        color: Colors.red[700], borderRadius: BorderRadius.circular(5)),
   );
 }
 
