@@ -1,3 +1,9 @@
+import 'package:blood_nepal/ui/home/settings.dart';
+import 'package:blood_nepal/ui/home/history.dart';
+import 'package:blood_nepal/ui/home/general.dart';
+import 'package:blood_nepal/ui/home/leaderboard.dart';
+import 'package:blood_nepal/ui/home/pressure.dart';
+import 'package:blood_nepal/ui/home/locations.dart';
 import 'package:blood_nepal/ui/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -88,26 +94,27 @@ class Home extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   homeButton(
-                      "General Info", context, const Signup(), Icons.info),
-                  homeButton("News", context, const Signup(), Icons.article),
+                      "General Info", context, const General(), Icons.info),
+                  homeButton("Donation History", context, const History(),
+                      Icons.article),
                 ]),
             const SizedBox(height: 50),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  homeButton("Leaderboard", context, const Signup(),
+                  homeButton("Leaderboard", context, const Leaderboard(),
                       Icons.leaderboard),
-                  homeButton("Blood Pressure", context, const Signup(),
+                  homeButton("Blood Pressure", context, const Pressure(),
                       Icons.health_and_safety),
                 ]),
             const SizedBox(height: 50),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  homeButton("Blood Bank Locations", context, const Signup(),
+                  homeButton("Blood Bank Locations", context, const Locations(),
                       Icons.location_on),
                   homeButton(
-                      "Settings", context, const Signup(), Icons.settings),
+                      "Settings", context, const Settings(), Icons.settings),
                 ])
           ],
         ),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:blood_nepal/ui/home/home.dart';
 
-class General extends StatefulWidget {
-  const General({super.key});
+class History extends StatefulWidget {
+  const History({super.key});
 
   @override
-  State<General> createState() => _GeneralState();
+  State<History> createState() => _HistoryState();
 }
 
-class _GeneralState extends State<General> {
+class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
