@@ -1,7 +1,8 @@
+import 'package:blood_nepal/ui/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'login.dart';
+import '../login.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -26,7 +27,8 @@ class Home extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Siddhartha\nTuladhar",
-                          style: TextStyle(fontSize: 20, letterSpacing: 1.2),
+                          style: TextStyle(
+                              fontSize: 20, letterSpacing: 1.2, height: 1.2),
                           textAlign: TextAlign.left),
                     ],
                   ),
@@ -56,7 +58,7 @@ class Home extends StatelessWidget {
                           textAlign: TextAlign.left)
                     ],
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 15),
                   IconButton(
                     onPressed: () {
                       _boxLogin.clear();
@@ -79,26 +81,71 @@ class Home extends StatelessWidget {
       backgroundColor: Colors.blueGrey[100],
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text(
-              "Welcome 🎉",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              _boxLogin.get("phoneNumber"),
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            const SizedBox(height: 50),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  homeButton(
+                      "General Info", context, const Signup(), Icons.info),
+                  homeButton("News", context, const Signup(), Icons.article),
+                ]),
+            const SizedBox(height: 50),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  homeButton("Leaderboard", context, const Signup(),
+                      Icons.leaderboard),
+                  homeButton("Blood Pressure", context, const Signup(),
+                      Icons.health_and_safety),
+                ]),
+            const SizedBox(height: 50),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  homeButton("Blood Bank Locations", context, const Signup(),
+                      Icons.location_on),
+                  homeButton(
+                      "Settings", context, const Signup(), Icons.settings),
+                ])
           ],
         ),
       ),
     );
   }
+}
+
+homeButton(String text, context, target, IconData icon) {
+  return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red[900],
+        elevation: 10,
+        fixedSize: const Size.fromRadius(75),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return target;
+            },
+          ),
+        );
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.white, size: 50),
+          const SizedBox(height: 10),
+          Text(
+            text,
+            style: const TextStyle(fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ));
 }

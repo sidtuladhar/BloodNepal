@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'home.dart';
+import 'home/home.dart';
 import 'signup.dart';
 
 class Login extends StatefulWidget {
