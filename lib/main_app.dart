@@ -8,9 +8,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFEA0000),
-        ),
+        colorScheme: ColorScheme.light(
+            primary: Colors.red[700]!, secondary: Colors.deepOrange),
       ),
       home: const Loading(),
     );

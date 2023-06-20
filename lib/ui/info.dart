@@ -38,7 +38,7 @@ class _InfoState extends State<Info> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.red[700],
+          backgroundColor: Theme.of(context).primaryColor,
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 20, top: 5),
@@ -74,33 +74,36 @@ class _InfoState extends State<Info> {
                       image: 'assets/images/donate.jpg',
                       title: 'Welcome to \n Blood Nepal',
                       content:
-                          'We are here to help you track your blood donations.'),
+                          'We are here to help you track your blood donations.',
+                      context: context),
                   makePage(
                       reverse: true,
                       image: 'assets/images/patient.jpg',
                       title: 'Donate blood and save lives',
                       content: 'One blood donation can potentially '
-                          'save up to three lives.'),
+                          'save up to three lives.',
+                      context: context),
                   makePage(
                       image: 'assets/images/doctor.jpg',
                       title: 'Blood donation \nhas many benefits',
                       content:
                           'Donating blood reduces the risk of heart disease, '
                           'lowers the risk of cancer, burns calories, '
-                          'and improves liver health.'),
+                          'and improves liver health.',
+                      context: context),
                 ]),
             Container(
               margin: const EdgeInsets.only(bottom: 60),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildIndicator(currentIndex)),
+                  children: _buildIndicator(currentIndex, context)),
             )
           ],
         ));
   }
 }
 
-Widget makePage({image, title, content, reverse = false}) {
+Widget makePage({image, title, content, reverse = false, context}) {
   return Container(
     padding: const EdgeInsets.only(left: 50, right: 50, bottom: 60),
     child: Column(
@@ -110,9 +113,9 @@ Widget makePage({image, title, content, reverse = false}) {
             ? Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Image.asset(image),
-                  ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Image.asset(image,
+                          width: MediaQuery.of(context).size.width * 0.8)),
                   const SizedBox(height: 30),
                 ],
               )
@@ -138,9 +141,9 @@ Widget makePage({image, title, content, reverse = false}) {
                 children: <Widget>[
                   const SizedBox(height: 30),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Image.asset(image),
-                  ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Image.asset(image,
+                          width: MediaQuery.of(context).size.width * 0.8)),
                 ],
               )
             : const SizedBox(),
@@ -149,24 +152,25 @@ Widget makePage({image, title, content, reverse = false}) {
   );
 }
 
-Widget _indicator(bool isActive) {
+Widget _indicator(bool isActive, context) {
   return AnimatedContainer(
     duration: const Duration(milliseconds: 300),
     height: 6,
     width: isActive ? 30 : 6,
     margin: const EdgeInsets.only(right: 5),
     decoration: BoxDecoration(
-        color: Colors.red[700], borderRadius: BorderRadius.circular(5)),
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(5)),
   );
 }
 
-List<Widget> _buildIndicator(currentIndex) {
+List<Widget> _buildIndicator(currentIndex, context) {
   List<Widget> indicators = [];
   for (int i = 0; i < 3; i++) {
     if (currentIndex == i) {
-      indicators.add(_indicator(true));
+      indicators.add(_indicator(true, context));
     } else {
-      indicators.add(_indicator(false));
+      indicators.add(_indicator(false, context));
     }
   }
   return indicators;

@@ -23,15 +23,25 @@ class Home extends StatelessWidget {
           shape: ShapeBorder.lerp(
               RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(color: Colors.red)),
+                  side: BorderSide(color: Theme.of(context).primaryColor)),
               RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(color: Colors.red)),
+                  side: BorderSide(color: Theme.of(context).primaryColor)),
               10),
-          leading: BackButton(color: Colors.red[900]),
-          backgroundColor: Colors.red[900],
+          leading: BackButton(color: Theme.of(context).primaryColor),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(
+                    begin: Alignment.center,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).colorScheme.secondary,
+                    ])),
+          ),
           toolbarHeight: 85,
-          //elevation: 10,
           actions: [
             Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -151,8 +161,7 @@ class Home extends StatelessWidget {
 homeButton(String text, context, target, IconData icon) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.red[700],
-        elevation: 5,
+        backgroundColor: Theme.of(context).primaryColor,
         fixedSize: const Size(170, 110),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
