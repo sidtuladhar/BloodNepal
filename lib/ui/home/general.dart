@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blood_nepal/ui/home/home.dart';
+import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
 
 class General extends StatefulWidget {
   const General({super.key});
@@ -9,8 +10,6 @@ class General extends StatefulWidget {
 }
 
 class _GeneralState extends State<General> {
-  bool isExpanded = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,121 +96,68 @@ class _GeneralState extends State<General> {
                 )),
           ],
         ),
-        body: Column(children: <Widget>[
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: const Text("Frequently Asked Questions:",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900)),
-          ),
-          const SizedBox(height: 20),
-          Container(
-              margin: EdgeInsets.symmetric(vertical: 8.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4.0,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(dividerColor: Colors.transparent),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          blurRadius: 8.0,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            isExpanded = !isExpanded;
-                          });
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(16.0),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFFff9966),
-                                    Color(0xFFff5e62),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12.0),
-                                  topRight: Radius.circular(12.0),
-                                ),
-                              ),
-                              child: Text(
-                                "what is blood donation?",
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            AnimatedCrossFade(
-                              duration: Duration(milliseconds: 300),
-                              crossFadeState: isExpanded
-                                  ? CrossFadeState.showSecond
-                                  : CrossFadeState.showFirst,
-                              firstChild: Container(),
-                              secondChild: Padding(
-                                padding: EdgeInsets.all(16.0),
-                                child: Text(
-                                  "Blood donation is a voluntary procedure where volunteers provide their blood for a community supply. There are two types of blood donation: 1) whole blood donation and 2) platelet donation. Blood banks often participate in the collection process as well as the procedures that follow it.",
-                                  style: TextStyle(
-                                      fontSize: 16.0, color: Colors.black),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )))
-        ]));
+        body: SingleChildScrollView(
+          child: Column(children: <Widget>[
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text("Frequently Asked Questions:",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900)),
+            ),
+            card(
+                "Can I donate blood?",
+                "To be eligible to donate blood, you must meet the following requirements:\n\n"
+                    "• Be 18 to 60 years old\n"
+                    "• Weight above 45kg \n"
+                    "• Have hemoglobin above 12 gm/dl\n"
+                    "• Have blood pressure 110-160 / 70-96 mmHg\n"
+                    "• Not had a medical surgery for 2 years\n"
+                    "• Not be pregnant or breastfeeding\n"
+                    "• Have at least 8 days since the start of the recent menstruation\n"
+                    "• Not having recent use of drugs or strong medicines"),
+            const SizedBox(height: 5),
+            card("Can I donate if I have a tattoo or piercing?",
+                "Yes, 4 months after the tattoo or piercing completely heals"),
+            const SizedBox(height: 5),
+            card("How long does it take to donate blood?",
+                "The whole process takes about 30 minutes"),
+            const SizedBox(height: 5),
+            card("How often can I donate blood?",
+                "You can donate blood every 3 months"),
+            const SizedBox(height: 5),
+            card("What should I bring to the donation?",
+                "You must bring a valid ID card (Citizenship, Passport, Driving License, etc.)"),
+          ]),
+        ));
   }
 
   Widget card(String question, String answer) {
-    return ExpansionTile(
-        title: Text(question,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.grey[100],
-        tilePadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-        childrenPadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        collapsedBackgroundColor: Colors.white,
-        textColor: Colors.black87,
-        collapsedTextColor: Colors.black87,
-        iconColor: Colors.black54,
-        collapsedIconColor: Colors.black54,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Text(answer, style: const TextStyle(fontSize: 15)),
-          )
-        ]);
+    return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        color: Colors.grey[300],
+        child: RoundedExpansionTile(
+          duration: const Duration(milliseconds: 300),
+          horizontalTitleGap: 1,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(question,
+              style:
+                  const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          trailing: const Icon(Icons.arrow_drop_up_rounded, size: 50),
+          children: [
+            Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                padding: const EdgeInsets.all(15),
+                child: Text(
+                  answer,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      height: 1.2,
+                      fontWeight: FontWeight.w500),
+                )),
+          ],
+        ));
   }
 }
