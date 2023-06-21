@@ -15,38 +15,29 @@ class _GeneralState extends State<General> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return Home();
-                  },
-                ),
-              );
-            },
-            icon: const Icon(Icons.arrow_back_ios_new_outlined, size: 30),
-          ),
-          toolbarHeight: 85,
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(right: 40),
-                  child: const Text("General Information",
-                      style: TextStyle(
-                          fontSize: 28,
-                          letterSpacing: 1.2,
-                          height: 1.2,
-                          fontFamily: "Rubik"),
-                      textAlign: TextAlign.left),
-                )
-              ],
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const Home();
+                    },
+                  ),
+                );
+              },
+              icon: const Icon(Icons.arrow_back_ios_new_outlined, size: 30),
             ),
-          ],
-        ),
+            toolbarHeight: 85,
+            title: Container(
+              child: const Text("General Information",
+                  style: TextStyle(
+                      fontSize: 28,
+                      letterSpacing: 1.2,
+                      height: 1.2,
+                      fontFamily: "Rubik"),
+                  textAlign: TextAlign.left),
+            )),
         body: SingleChildScrollView(
           child: Column(children: <Widget>[
             const SizedBox(height: 10),
