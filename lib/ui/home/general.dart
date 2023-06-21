@@ -50,7 +50,7 @@ class _GeneralState extends State<General> {
                       style: TextStyle(
                           fontFamily: "Rubik",
                           fontSize: 28,
-                          fontWeight: FontWeight.w900)),
+                          fontWeight: FontWeight.w500)),
                 ),
                 Divider(
                     thickness: 3,

@@ -173,6 +173,10 @@ class _SettingsState extends State<Settings> {
                   ],
                 ),
               ),
+              const SizedBox(height: 50),
+              const Center(
+                  child:
+                      Text("Version 0.5", style: TextStyle(color: Colors.grey)))
             ],
           ),
         ));
