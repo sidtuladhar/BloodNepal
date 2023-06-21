@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart';
 
 import 'info.dart';
 
@@ -47,9 +46,6 @@ class _LoadingState extends State<Loading> {
 }
 
 Future<void> loadAssets(context) async {
-  // Simulate loading assets
-  await Future.delayed(const Duration(seconds: 2));
-
   // Load images
   const image1 = AssetImage('assets/images/doctor.jpg');
   const image2 = AssetImage('assets/images/donate.jpg');

@@ -44,6 +44,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.0.0
   rounded_expansion_tile: ^0.0.13
+  settings_ui: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -88,10 +89,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Domine
+    - family: Rubik
       fonts:
-        - asset: lib/fonts/Domine/static/Domine-Regular.ttf
-        - asset: lib/fonts/Domine/static/Domine-Medium.ttf
+        - asset: lib/fonts/Rubik/Rubik-Regular.ttf
+        - asset: lib/fonts/Rubik/Rubik-Bold.ttf
+        - asset: lib/fonts/Rubik/Rubik-Light.ttf
+        - asset: lib/fonts/Rubik/Rubik-Italic.ttf
 
   #   - family: Trajan Pro
   #     fonts:

@@ -6,14 +6,9 @@ import 'package:blood_nepal/ui/home/pressure.dart';
 import 'package:blood_nepal/ui/home/locations.dart';
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
-import '../login.dart';
 
 class Home extends StatelessWidget {
-  Home({super.key});
-
-  final Box _boxLogin = Hive.box("login");
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,23 +37,24 @@ class Home extends StatelessWidget {
                     ])),
           ),
           toolbarHeight: 85,
-          actions: [
+          actions: const [
             Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Siddhartha\nTuladhar",
+                        Text("SIDDHARTHA\nTULADHAR",
                             style: TextStyle(
                                 fontSize: 20, letterSpacing: 1.2, height: 1.2),
                             textAlign: TextAlign.left),
                       ],
                     ),
-                    const SizedBox(width: 35),
-                    const Column(
+                    SizedBox(width: 30),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("BLOOD\nTYPE",
@@ -70,8 +66,8 @@ class Home extends StatelessWidget {
                             textAlign: TextAlign.left)
                       ],
                     ),
-                    const SizedBox(width: 30),
-                    const Column(
+                    SizedBox(width: 30),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("TOTAL\nDONATIONS",
@@ -83,22 +79,7 @@ class Home extends StatelessWidget {
                             textAlign: TextAlign.left)
                       ],
                     ),
-                    const SizedBox(width: 15),
-                    IconButton(
-                      onPressed: () {
-                        _boxLogin.clear();
-                        _boxLogin.put("loginStatus", false);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const Login();
-                            },
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.logout_rounded),
-                    ),
+                    SizedBox(width: 30),
                   ],
                 )),
           ],
@@ -120,7 +101,7 @@ class Home extends StatelessWidget {
                 getAppointment(),
                 const SizedBox(height: 20),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       homeButton("Blood Bank Locations", context,
                           const Locations(), Icons.location_on),
@@ -129,7 +110,7 @@ class Home extends StatelessWidget {
                     ]),
                 const SizedBox(height: 20),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       homeButton("Leaderboard", context, const Leaderboard(),
                           Icons.leaderboard),
@@ -138,7 +119,7 @@ class Home extends StatelessWidget {
                     ]),
                 const SizedBox(height: 20),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       homeButton(
                           "General Info", context, const General(), Icons.info),
@@ -148,12 +129,7 @@ class Home extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 50),
-          Text("Version 0.5",
-              style: TextStyle(
-                  fontSize: 15,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.grey[900])),
+          // const SizedBox(height: 10),
         ])));
   }
 }
@@ -162,7 +138,7 @@ homeButton(String text, context, target, IconData icon) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor,
-        fixedSize: const Size(170, 110),
+        fixedSize: const Size(140, 130),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -180,11 +156,11 @@ homeButton(String text, context, target, IconData icon) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: Colors.white, size: 45),
+          Icon(icon, color: Colors.white, size: 30),
           const SizedBox(height: 5),
           Text(
             text,
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 18),
             textAlign: TextAlign.center,
           ),
         ],
