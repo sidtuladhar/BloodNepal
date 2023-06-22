@@ -20,7 +20,7 @@ class _HistoryState extends State<History> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return const Home();
+                    return Home();
                   },
                 ),
               );

@@ -20,7 +20,7 @@ class _LocationsState extends State<Locations> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return const Home();
+                  return Home();
                 },
               ),
             );

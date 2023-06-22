@@ -11,11 +11,16 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String _selectedBloodGroup = 'O+';
-  final Box _boxLogin = Hive.box("login");
+  final Box boxLogin = Hive.box("login");
 
   @override
   Widget build(BuildContext context) {
+    String name = boxLogin.get("name");
+    String email = boxLogin.get("email");
+    String bloodType = boxLogin.get("bloodType");
+    String phoneNumber = boxLogin.get("phoneNumber").toString();
+    String birthDate = boxLogin.get("birthDate");
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -25,7 +30,7 @@ class _SettingsState extends State<Settings> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return const Home();
+                    return Home();
                   },
                 ),
               );
@@ -47,12 +52,12 @@ class _SettingsState extends State<Settings> {
             children: [
               TextFormField(
                 keyboardType: TextInputType.name,
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 3),
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(bottom: 3),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Full name',
-                    hintText: "Siddhartha Tuladhar",
-                    hintStyle: TextStyle(
+                    hintText: name,
+                    hintStyle: const TextStyle(
                       fontFamily: "Rubik",
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -62,12 +67,12 @@ class _SettingsState extends State<Settings> {
               const SizedBox(height: 20),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 3),
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(bottom: 3),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Email address',
-                    hintText: "siddhartha.tuladhar@yahoo.com",
-                    hintStyle: TextStyle(
+                    hintText: email,
+                    hintStyle: const TextStyle(
                       fontFamily: "Rubik",
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -77,12 +82,12 @@ class _SettingsState extends State<Settings> {
               const SizedBox(height: 20),
               TextFormField(
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 3),
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(bottom: 3),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Phone number',
-                    hintText: "1234567890",
-                    hintStyle: TextStyle(
+                    hintText: phoneNumber,
+                    hintStyle: const TextStyle(
                       fontFamily: "Rubik",
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -92,11 +97,11 @@ class _SettingsState extends State<Settings> {
               const SizedBox(height: 20),
               TextFormField(
                 keyboardType: TextInputType.datetime,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(bottom: 3),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Date of birth (dd/mm/yyyy)',
-                    hintText: "23/12/2002",
+                    hintText: birthDate,
                     hintStyle: TextStyle(
                       fontFamily: "Rubik",
                       fontSize: 18,
@@ -136,9 +141,9 @@ class _SettingsState extends State<Settings> {
                             textAlign: TextAlign.center),
                       );
                     }).toList(),
-                    value: _selectedBloodGroup,
+                    value: bloodType,
                     onChanged: (newValue) {
-                      _selectedBloodGroup = newValue!;
+                      bloodType = newValue!;
                       setState(() {
                         newValue;
                       });
@@ -149,7 +154,7 @@ class _SettingsState extends State<Settings> {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-                  _boxLogin.put("loginStatus", false);
+                  boxLogin.put("loginStatus", false);
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

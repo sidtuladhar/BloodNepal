@@ -151,16 +151,27 @@ class _LoginState extends State<Login> {
                                     onPressed: () async {
                                       if (_formKey.currentState?.validate() ??
                                           false) {
-                                        bool success =
+                                        Map loginInfo =
                                             await ApiService().checkLogin(
                                           _controllerPhoneNumber.text,
                                           _controllerPassword.text,
                                         );
-                                        if (success) {
+                                        if (loginInfo["success"] == true) {
+                                          print(loginInfo);
                                           _boxLogin.put("loginStatus", true);
-                                          _boxLogin.put(
-                                              _controllerPhoneNumber.text,
+                                          _boxLogin.put("phoneNumber",
                                               _controllerPhoneNumber.text);
+                                          _boxLogin.put("password",
+                                              _controllerPassword.text);
+                                          _boxLogin.put(
+                                              "name", loginInfo["name"]);
+                                          _boxLogin.put("bloodType",
+                                              loginInfo["bloodType"]);
+                                          _boxLogin.put(
+                                              "email", loginInfo["email"]);
+                                          _boxLogin.put("birthDate",
+                                              loginInfo["birthDate"]);
+
                                           if (!mounted) return;
                                           navigateToHome(context);
                                         }
@@ -228,7 +239,7 @@ void navigateToHome(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) => const Home(),
+        builder: (_) => Home(),
       ),
     );
   });

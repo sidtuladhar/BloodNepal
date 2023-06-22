@@ -2,7 +2,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 
 class ApiService {
-  Future<bool> checkLogin(String phoneNumber, String password) async {
+  Future<Map> checkLogin(String phoneNumber, String password) async {
     final url = Uri.parse("http://10.0.2.2:8000/api/login");
 
     try {
@@ -15,7 +15,7 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        return responseData['success'] == true;
+        return responseData;
       } else {
         print('Request failed with status: ${response.statusCode}');
       }

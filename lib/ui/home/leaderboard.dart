@@ -20,7 +20,7 @@ class _LeaderboardState extends State<Leaderboard> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return const Home();
+                  return Home();
                 },
               ),
             );

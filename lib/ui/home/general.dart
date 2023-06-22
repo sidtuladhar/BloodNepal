@@ -21,7 +21,7 @@ class _GeneralState extends State<General> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return const Home();
+                      return Home();
                     },
                   ),
                 );
