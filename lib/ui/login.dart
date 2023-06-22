@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+import 'package:blood_nepal/api.dart';
 import 'home/home.dart';
 import 'signup.dart';
 
@@ -17,12 +17,11 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final FocusNode _focusNodePassword = FocusNode();
-  final TextEditingController _controllerUsername = TextEditingController();
+  final TextEditingController _controllerPhoneNumber = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
   bool _obscurePassword = true;
   final Box _boxLogin = Hive.box("login");
-  final Box _boxAccounts = Hive.box("accounts");
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +76,7 @@ class _LoginState extends State<Login> {
                           child: Column(
                             children: [
                               TextFormField(
-                                controller: _controllerUsername,
+                                controller: _controllerPhoneNumber,
                                 keyboardType: TextInputType.name,
                                 decoration: InputDecoration(
                                   labelText: "Phone Number",
@@ -95,8 +94,6 @@ class _LoginState extends State<Login> {
                                 validator: (String? value) {
                                   if (value == null || value.isEmpty) {
                                     return "Please enter phone number.";
-                                  } else if (!_boxAccounts.containsKey(value)) {
-                                    return "Phone Number is not registered.";
                                   }
 
                                   return null;
@@ -134,10 +131,6 @@ class _LoginState extends State<Login> {
                                 validator: (String? value) {
                                   if (value == null || value.isEmpty) {
                                     return "Please enter password.";
-                                  } else if (value !=
-                                      _boxAccounts
-                                          .get(_controllerUsername.text)) {
-                                    return "Wrong password.";
                                   }
 
                                   return null;
@@ -155,21 +148,22 @@ class _LoginState extends State<Login> {
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                     ),
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (_formKey.currentState?.validate() ??
                                           false) {
-                                        _boxLogin.put("loginStatus", true);
-                                        _boxLogin.put("phoneNumber",
-                                            _controllerUsername.text);
-
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return Home();
-                                            },
-                                          ),
+                                        bool success =
+                                            await ApiService().checkLogin(
+                                          _controllerPhoneNumber.text,
+                                          _controllerPassword.text,
                                         );
+                                        if (success) {
+                                          _boxLogin.put("loginStatus", true);
+                                          _boxLogin.put(
+                                              _controllerPhoneNumber.text,
+                                              _controllerPhoneNumber.text);
+                                          if (!mounted) return;
+                                          navigateToHome(context);
+                                        }
                                       }
                                     },
                                     child: const Text("Login",
@@ -223,8 +217,19 @@ class _LoginState extends State<Login> {
   @override
   void dispose() {
     _focusNodePassword.dispose();
-    _controllerUsername.dispose();
+    _controllerPhoneNumber.dispose();
     _controllerPassword.dispose();
     super.dispose();
   }
+}
+
+void navigateToHome(BuildContext context) {
+  Future.delayed(Duration.zero, () {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const Home(),
+      ),
+    );
+  });
 }
