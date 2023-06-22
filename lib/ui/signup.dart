@@ -28,7 +28,7 @@ class _SignupState extends State<Signup> {
   final TextEditingController _controllerConFirmPassword =
       TextEditingController();
 
-  final Box _boxAccounts = Hive.box("accounts");
+  final Box _boxAccounts = Hive.box("login");
   bool _obscurePassword = true;
 
   @override

@@ -16,6 +16,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? name = boxLogin.get("name");
+    List newName = name!.split(" ");
+    String firstName = newName[0];
+    String lastName = newName[1];
     final String? bloodType = boxLogin.get("bloodType");
 
     return Scaffold(
@@ -29,6 +32,7 @@ class Home extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   side: BorderSide(color: Theme.of(context).primaryColor)),
               10),
+          leadingWidth: 0,
           leading: BackButton(color: Theme.of(context).primaryColor),
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -44,13 +48,12 @@ class Home extends StatelessWidget {
           ),
           toolbarHeight: 85,
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name!,
+                  Text('$firstName\n$lastName',
                       style: const TextStyle(
                           fontSize: 20, letterSpacing: 1.2, height: 1.2),
                       textAlign: TextAlign.left),
@@ -76,13 +79,12 @@ class Home extends StatelessWidget {
                   Text("TOTAL\nDONATIONS",
                       style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.left),
-                  Text("5",
+                  Text("0",
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.left)
                 ],
               ),
-              const SizedBox(width: 30),
             ],
           ),
         ),

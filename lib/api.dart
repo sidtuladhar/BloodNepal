@@ -22,6 +22,6 @@ class ApiService {
     } catch (error) {
       print('Big Error: $error');
     }
-    throw Exception('Failed to login');
+    return {'success': false};
   }
 }

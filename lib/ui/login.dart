@@ -21,6 +21,7 @@ class _LoginState extends State<Login> {
   final TextEditingController _controllerPassword = TextEditingController();
 
   bool _obscurePassword = true;
+  String errorMessage = '';
   final Box _boxLogin = Hive.box("login");
 
   @override
@@ -92,8 +93,10 @@ class _LoginState extends State<Login> {
                                 onEditingComplete: () =>
                                     _focusNodePassword.requestFocus(),
                                 validator: (String? value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter phone number.";
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value.length != 10) {
+                                    return "Please enter a valid phone number.";
                                   }
 
                                   return null;
@@ -136,7 +139,12 @@ class _LoginState extends State<Login> {
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 60),
+                              const SizedBox(height: 5),
+                              Text(errorMessage,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor),
+                                  textAlign: TextAlign.left),
+                              const SizedBox(height: 40),
                               Column(
                                 children: [
                                   ElevatedButton(
@@ -157,7 +165,7 @@ class _LoginState extends State<Login> {
                                           _controllerPassword.text,
                                         );
                                         if (loginInfo["success"] == true) {
-                                          print(loginInfo);
+                                          errorMessage = "";
                                           _boxLogin.put("loginStatus", true);
                                           _boxLogin.put("phoneNumber",
                                               _controllerPhoneNumber.text);
@@ -174,6 +182,11 @@ class _LoginState extends State<Login> {
 
                                           if (!mounted) return;
                                           navigateToHome(context);
+                                        } else {
+                                          setState(() {
+                                            errorMessage = "Phone number or "
+                                                "password is incorrect.";
+                                          });
                                         }
                                       }
                                     },
