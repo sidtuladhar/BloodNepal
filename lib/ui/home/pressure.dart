@@ -14,9 +14,9 @@ class _PressureState extends State<Pressure> {
     LineChartBarData(
       isCurved: true,
       color: Colors.blueAccent,
-      barWidth: 5,
+      barWidth: 6,
       isStrokeCapRound: true,
-      dotData: const FlDotData(show: false),
+      dotData: const FlDotData(show: true),
       belowBarData: BarAreaData(show: false),
       spots: const [
         FlSpot(1, 70),
@@ -31,9 +31,9 @@ class _PressureState extends State<Pressure> {
     LineChartBarData(
       isCurved: true,
       color: Colors.greenAccent,
-      barWidth: 5,
+      barWidth: 6,
       isStrokeCapRound: true,
-      dotData: const FlDotData(show: false),
+      dotData: const FlDotData(show: true),
       belowBarData: BarAreaData(show: false),
       spots: const [
         FlSpot(1, 110),
@@ -54,10 +54,16 @@ class _PressureState extends State<Pressure> {
     );
     Widget text;
     switch (value.toInt()) {
-      case 2:
-        text = const Text('SEPT', style: style);
+      case 1:
+        text = const Text('JAN', style: style);
+        break;
+      case 4:
+        text = const Text('APR', style: style);
         break;
       case 7:
+        text = const Text('JUL', style: style);
+        break;
+      case 10:
         text = const Text('OCT', style: style);
         break;
       case 12:
@@ -77,32 +83,35 @@ class _PressureState extends State<Pressure> {
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 20,
     );
     String text;
     switch (value.toInt()) {
-      case 1:
+      case 50:
         text = '50';
         break;
-      case 2:
+      case 60:
         text = '60';
         break;
-      case 3:
+      case 70:
+        text = '70';
+        break;
+      case 80:
         text = '80';
         break;
-      case 4:
+      case 90:
         text = '90';
         break;
-      case 5:
+      case 100:
         text = '100';
         break;
-      case 6:
+      case 110:
         text = '110';
         break;
-      case 7:
+      case 120:
         text = '120';
         break;
-      case 8:
+      case 130:
         text = '130';
         break;
       default:
@@ -111,6 +120,13 @@ class _PressureState extends State<Pressure> {
 
     return Text(text, style: style, textAlign: TextAlign.center);
   }
+
+  SideTitles leftTitles() => SideTitles(
+        getTitlesWidget: leftTitleWidgets,
+        showTitles: true,
+        interval: 1,
+        reservedSize: 40,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -143,17 +159,27 @@ class _PressureState extends State<Pressure> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           const SizedBox(
-            height: 37,
+            height: 80,
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(right: 16, left: 6),
+              padding: const EdgeInsets.only(right: 30, left: 6),
               child: LineChart(LineChartData(
+                lineTouchData: LineTouchData(
+                  handleBuiltInTouches: true,
+                  touchTooltipData: LineTouchTooltipData(
+                    tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+                  ),
+                ),
+                minX: 0,
+                maxX: 13,
+                minY: 45,
+                maxY: 135,
                 titlesData: FlTitlesData(
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 32,
+                      reservedSize: 30,
                       interval: 1,
                       getTitlesWidget: bottomTitleWidgets,
                     ),
@@ -169,7 +195,7 @@ class _PressureState extends State<Pressure> {
                       getTitlesWidget: leftTitleWidgets,
                       showTitles: true,
                       interval: 1,
-                      reservedSize: 40,
+                      reservedSize: 50,
                     ),
                   ),
                 ),
@@ -188,7 +214,7 @@ class _PressureState extends State<Pressure> {
             ),
           ),
           const SizedBox(
-            height: 100,
+            height: 150,
           ),
         ],
       ),
