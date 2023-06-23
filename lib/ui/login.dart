@@ -26,6 +26,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    _boxLogin.put("loginStatus", false);
+
     if (_boxLogin.get("loginStatus") ?? false) {
       return Home();
     }
@@ -238,6 +240,17 @@ class _LoginState extends State<Login> {
     );
   }
 
+  void navigateToHome(BuildContext context) {
+    Future.delayed(Duration.zero, () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => Home(),
+        ),
+      );
+    });
+  }
+
   @override
   void dispose() {
     _focusNodePassword.dispose();
@@ -245,15 +258,4 @@ class _LoginState extends State<Login> {
     _controllerPassword.dispose();
     super.dispose();
   }
-}
-
-void navigateToHome(BuildContext context) {
-  Future.delayed(Duration.zero, () {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => Home(),
-      ),
-    );
-  });
 }

@@ -6,7 +6,7 @@ class ApiService {
     final url = Uri.parse("http://10.0.2.2:8000/api/login");
 
     try {
-      final response = await post(
+      final response = await put(
         url,
         body: {
           "phoneNumber": phoneNumber,
@@ -30,7 +30,32 @@ class ApiService {
     final url = Uri.parse("http://10.0.2.2:8000/api/logout");
 
     try {
-      final response = await post(url, body: {"phoneNumber": phoneNumber});
+      final response = await put(url, body: {"phoneNumber": phoneNumber});
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData['success'];
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        return false;
+      }
+    } catch (error) {
+      print('The error is $error');
+      return false;
+    }
+  }
+
+  Future<bool> editProfile(String name, String email, String phoneNumber,
+      String birthDate, String bloodType) async {
+    final url = Uri.parse("http://10.0.2.2:8000/api/editProfile");
+
+    try {
+      final response = await post(url, body: {
+        "phoneNumber": phoneNumber,
+        "name": name,
+        "birthDate": birthDate,
+        "email": email,
+        "bloodType": bloodType,
+      });
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         return responseData['success'];
