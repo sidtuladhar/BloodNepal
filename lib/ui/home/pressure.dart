@@ -14,33 +14,35 @@ class _PressureState extends State<Pressure> {
     LineChartBarData(
       isCurved: true,
       color: Colors.blueAccent,
-      barWidth: 8,
+      barWidth: 5,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: const [
-        FlSpot(1, 1),
-        FlSpot(3, 1.5),
-        FlSpot(5, 1.4),
-        FlSpot(7, 3.4),
-        FlSpot(10, 2),
-        FlSpot(12, 2.2),
-        FlSpot(13, 1.8),
+        FlSpot(1, 70),
+        FlSpot(3, 71),
+        FlSpot(5, 75),
+        FlSpot(7, 63),
+        FlSpot(10, 60),
+        FlSpot(12, 80),
+        FlSpot(13, 72),
       ],
     ),
     LineChartBarData(
       isCurved: true,
       color: Colors.greenAccent,
-      barWidth: 8,
+      barWidth: 5,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: const [
-        FlSpot(1, 2.8),
-        FlSpot(3, 1.9),
-        FlSpot(6, 3),
-        FlSpot(10, 1.3),
-        FlSpot(13, 2.5),
+        FlSpot(1, 110),
+        FlSpot(3, 100),
+        FlSpot(5, 98),
+        FlSpot(7, 93),
+        FlSpot(10, 105),
+        FlSpot(12, 120),
+        FlSpot(13, 129),
       ],
     )
   ];
@@ -80,19 +82,28 @@ class _PressureState extends State<Pressure> {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '1m';
+        text = '50';
         break;
       case 2:
-        text = '2m';
+        text = '60';
         break;
       case 3:
-        text = '3m';
+        text = '80';
         break;
       case 4:
-        text = '5m';
+        text = '90';
         break;
       case 5:
-        text = '6m';
+        text = '100';
+        break;
+      case 6:
+        text = '110';
+        break;
+      case 7:
+        text = '120';
+        break;
+      case 8:
+        text = '130';
         break;
       default:
         return Container();
@@ -177,7 +188,7 @@ class _PressureState extends State<Pressure> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 100,
           ),
         ],
       ),
