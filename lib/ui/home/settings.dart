@@ -1,3 +1,4 @@
+import 'package:blood_nepal/api.dart';
 import 'package:flutter/material.dart';
 import 'package:blood_nepal/ui/home/home.dart';
 import 'package:blood_nepal/ui/login.dart';
@@ -98,11 +99,11 @@ class _SettingsState extends State<Settings> {
               TextFormField(
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 3),
+                    contentPadding: const EdgeInsets.only(bottom: 3),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Date of birth (dd/mm/yyyy)',
                     hintText: birthDate,
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       fontFamily: "Rubik",
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -164,18 +165,44 @@ class _SettingsState extends State<Settings> {
                     ),
                   );
                 },
-                child: Row(
-                  children: [
-                    Icon(Icons.logout_rounded,
-                        size: 30, color: Theme.of(context).primaryColor),
-                    const SizedBox(width: 10),
-                    Text("Logout",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor),
-                        textAlign: TextAlign.left),
-                  ],
+                child: GestureDetector(
+                  onTap: () async {
+                    var logoutApi =
+                        ApiService().logout(boxLogin.get("phoneNumber"));
+                    if (await logoutApi) {
+                      boxLogin.put("loginStatus", false);
+                      if (!mounted) return;
+                      navigateToLogin(context);
+                    } else {
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            "Something went wrong. Please try again later.",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout_rounded,
+                          size: 30, color: Theme.of(context).primaryColor),
+                      const SizedBox(width: 10),
+                      Text("Logout",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor),
+                          textAlign: TextAlign.left),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 50),
@@ -186,4 +213,15 @@ class _SettingsState extends State<Settings> {
           ),
         ));
   }
+}
+
+void navigateToLogin(BuildContext context) {
+  Future.delayed(Duration.zero, () {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const Login(),
+      ),
+    );
+  });
 }
