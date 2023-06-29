@@ -15,10 +15,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? name = boxLogin.get("name");
-    List newName = name!.split(" ");
-    String firstName = newName[0];
-    String lastName = newName[1];
+    String firstName = boxLogin.get("fname");
+    String lastName = boxLogin.get("lname");
     final String? bloodType = boxLogin.get("bloodType");
 
     return Scaffold(

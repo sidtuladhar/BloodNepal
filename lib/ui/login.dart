@@ -174,7 +174,9 @@ class _LoginState extends State<Login> {
                                           _boxLogin.put("password",
                                               _controllerPassword.text);
                                           _boxLogin.put(
-                                              "name", loginInfo["name"]);
+                                              "fname", loginInfo["fname"]);
+                                          _boxLogin.put(
+                                              "lname", loginInfo["lname"]);
                                           _boxLogin.put("bloodType",
                                               loginInfo["bloodType"]);
                                           _boxLogin.put(

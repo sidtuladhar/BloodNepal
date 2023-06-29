@@ -89,13 +89,13 @@ class _GeneralState extends State<General> {
 
   Widget card(String question, String answer) {
     return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: RoundedExpansionTile(
           minVerticalPadding: 10,
           duration: const Duration(milliseconds: 200),
           horizontalTitleGap: 1,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           tileColor: Theme.of(context).primaryColor,
           title: Text(question,
               style: const TextStyle(
@@ -107,7 +107,7 @@ class _GeneralState extends State<General> {
           children: [
             Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                     color: Colors.grey[400]),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

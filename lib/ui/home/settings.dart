@@ -12,6 +12,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  final _formKey = GlobalKey<FormState>();
   final Box boxLogin = Hive.box("login");
   bool readOnly = true;
   late String blood;
@@ -23,7 +24,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    controllerName.text = boxLogin.get("name");
+    controllerName.text = boxLogin.get("fname") + " " + boxLogin.get("lname");
     controllerBloodType.text = boxLogin.get("bloodType");
     controllerEmail.text = boxLogin.get("email");
     controllerBirthDate.text = boxLogin.get("birthDate");
@@ -75,24 +76,39 @@ class _SettingsState extends State<Settings> {
                       fontWeight: FontWeight.w500,
                       color: textColor(readOnly),
                     )),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your full name.";
+                  } else if (!(value.contains(' '))) {
+                    return "Invalid full name.";
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: controllerEmail,
-                readOnly: readOnly,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(bottom: 3),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    labelText: 'Email address',
-                    hintText: controllerEmail.text,
-                    hintStyle: TextStyle(
-                      fontFamily: "Rubik",
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: textColor(readOnly),
-                    )),
-              ),
+                  controller: controllerEmail,
+                  readOnly: readOnly,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(bottom: 3),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      labelText: 'Email address',
+                      hintText: controllerEmail.text,
+                      hintStyle: TextStyle(
+                        fontFamily: "Rubik",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: textColor(readOnly),
+                      )),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter email.";
+                    } else if (!(value.contains('@') && value.contains('.'))) {
+                      return "Invalid email.";
+                    }
+                    return null;
+                  }),
               const SizedBox(height: 20),
               TextFormField(
                 readOnly: true,
@@ -125,6 +141,14 @@ class _SettingsState extends State<Settings> {
                       fontWeight: FontWeight.w500,
                       color: textColor(readOnly),
                     )),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your date of birth.";
+                  } else if (!(value.contains('-'))) {
+                    return "Invalid date of birth.";
+                  }
+                  return null;
+                },
                 onEditingComplete: () {
                   setState(() {
                     boxLogin.put("birthDate", controllerBirthDate.text);
@@ -218,7 +242,8 @@ class _SettingsState extends State<Settings> {
                       )),
                   TextButton(
                       onPressed: () async {
-                        if (readOnly == false) {
+                        if (readOnly == false &&
+                            _formKey.currentState!.validate()) {
                           var editProfileApi = ApiService().editProfile(
                               controllerName.text,
                               controllerEmail.text,
