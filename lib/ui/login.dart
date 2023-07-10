@@ -176,7 +176,13 @@ class _LoginState extends State<Login> {
                                           _boxLogin.put(
                                               "fname", loginInfo["fname"]);
                                           _boxLogin.put(
+                                              "mname", loginInfo["mname"]);
+                                          _boxLogin.put(
+                                              "address", loginInfo["address"]);
+                                          _boxLogin.put(
                                               "lname", loginInfo["lname"]);
+                                          _boxLogin.put(
+                                              "gender", loginInfo["gender"]);
                                           _boxLogin.put("bloodType",
                                               loginInfo["bloodType"]);
                                           _boxLogin.put(

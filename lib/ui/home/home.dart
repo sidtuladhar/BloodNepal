@@ -96,7 +96,7 @@ class Home extends StatelessWidget {
               children: <Widget>[
                 const SizedBox(height: 20),
                 const Text(
-                  'Appointment',
+                  'Upcoming Events',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
@@ -178,7 +178,7 @@ Widget getAppointment() {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey, width: .1)),
     padding: const EdgeInsets.all(18),
-    child: const Text("You currently have no appointment.",
+    child: const Text("There are no events scheduled at the moment.",
         style: TextStyle(fontSize: 20)),
   );
 }

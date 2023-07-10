@@ -44,20 +44,31 @@ class ApiService {
     }
   }
 
-  Future<bool> editProfile(String name, String email, String phoneNumber,
-      String birthDate, String bloodType) async {
+  Future<bool> editProfile(
+      String fname,
+      String mname,
+      String lname,
+      String email,
+      String address,
+      String phoneNumber,
+      String birthDate,
+      String bloodType) async {
     final url = Uri.parse("http://10.0.2.2:8000/api/editProfile");
 
     try {
       final response = await post(url, body: {
         "phoneNumber": phoneNumber,
-        "name": name,
+        "fname": fname,
+        "mname": mname,
+        "address": address,
+        "lname": lname,
         "birthDate": birthDate,
         "email": email,
         "bloodType": bloodType,
       });
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
+        print("The edit profile response is $responseData");
         return responseData['success'];
       } else {
         print('Request failed with status: ${response.statusCode}');
