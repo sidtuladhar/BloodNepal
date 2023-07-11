@@ -79,4 +79,23 @@ class ApiService {
       return false;
     }
   }
+
+  Future<List> getLeaderboard() async {
+    final url = Uri.parse("http://10.0.2.2:8000/api/leaderboard");
+
+    try {
+      final response = await get(url);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        return responseData;
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        return [];
+      }
+    } catch (error) {
+      print('The error is $error');
+      return [];
+    }
+  }
 }
