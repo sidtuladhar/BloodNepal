@@ -17,7 +17,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     String firstName = boxLogin.get("fname");
     String lastName = boxLogin.get("lname");
-    final String? bloodType = boxLogin.get("bloodType");
+    final String? bloodGroup = boxLogin.get("bloodGroup");
+    final int totalDonations = boxLogin.get("totalDonations");
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -61,25 +62,25 @@ class Home extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("BLOOD\nTYPE",
+                  const Text("BLOOD\nGROUP",
                       style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.left),
-                  Text("$bloodType",
+                  Text("$bloodGroup",
                       style: const TextStyle(
                           fontSize: 25, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.left)
                 ],
               ),
               const SizedBox(width: 30),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("TOTAL\nDONATIONS",
+                  const Text("TOTAL\nDONATIONS",
                       style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.left),
-                  Text("0",
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  Text("$totalDonations",
+                      style: const TextStyle(
+                          fontSize: 25, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.left)
                 ],
               ),

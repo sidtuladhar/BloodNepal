@@ -183,13 +183,14 @@ class _LoginState extends State<Login> {
                                               "lname", loginInfo["lname"]);
                                           _boxLogin.put(
                                               "gender", loginInfo["gender"]);
-                                          _boxLogin.put("bloodType",
-                                              loginInfo["bloodType"]);
+                                          _boxLogin.put("bloodGroup",
+                                              loginInfo["bloodGroup"]);
                                           _boxLogin.put(
                                               "email", loginInfo["email"]);
                                           _boxLogin.put("birthDate",
                                               loginInfo["birthDate"]);
-
+                                          _boxLogin.put("totalDonations",
+                                              loginInfo["totalDonations"]);
                                           if (!mounted) return;
                                           navigateToHome(context);
                                         } else {

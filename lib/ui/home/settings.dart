@@ -22,7 +22,7 @@ class _SettingsState extends State<Settings> {
   final TextEditingController controllerLName = TextEditingController();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerAddress = TextEditingController();
-  final TextEditingController controllerBloodType = TextEditingController();
+  final TextEditingController controllerbloodGroup = TextEditingController();
   final TextEditingController controllerBirthDate = TextEditingController();
 
   @override
@@ -34,7 +34,7 @@ class _SettingsState extends State<Settings> {
       controllerMName.text = boxLogin.get("mname");
     }
     controllerLName.text = boxLogin.get("lname");
-    controllerBloodType.text = boxLogin.get("bloodType");
+    controllerbloodGroup.text = boxLogin.get("bloodGroup");
     controllerEmail.text = boxLogin.get("email");
     controllerAddress.text = boxLogin.get("address");
     controllerBirthDate.text = boxLogin.get("birthDate");
@@ -231,7 +231,7 @@ class _SettingsState extends State<Settings> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Blood type",
+                    Text("Blood Group",
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                         textAlign: TextAlign.left),
                     DropdownButtonFormField<String>(
@@ -259,12 +259,12 @@ class _SettingsState extends State<Settings> {
                               textAlign: TextAlign.center),
                         );
                       }).toList(),
-                      value: boxLogin.get("bloodType"),
+                      value: boxLogin.get("bloodGroup"),
                       onChanged: readOnly
                           ? null
                           : (newValue) {
                               setState(() {
-                                boxLogin.put("bloodType", newValue!);
+                                boxLogin.put("bloodGroup", newValue!);
                               });
                             },
                     ),
@@ -325,7 +325,7 @@ class _SettingsState extends State<Settings> {
                                     controllerAddress.text,
                                     boxLogin.get("phoneNumber"),
                                     controllerBirthDate.text,
-                                    boxLogin.get("bloodType"));
+                                    boxLogin.get("bloodGroup"));
                             if (await editProfileApi == true) {
                               boxLogin.put("fname", controllerFName.text);
                               boxLogin.put("mname", controllerMName.text);
@@ -335,7 +335,7 @@ class _SettingsState extends State<Settings> {
                               boxLogin.put(
                                   "birthDate", controllerBirthDate.text);
                               boxLogin.put(
-                                  "bloodType", boxLogin.get("bloodType"));
+                                  "bloodGroup", boxLogin.get("bloodGroup"));
                             } else {
                               if (!mounted) return;
 
@@ -408,7 +408,7 @@ class _SettingsState extends State<Settings> {
   @override
   void dispose() {
     controllerEmail.dispose();
-    controllerBloodType.dispose();
+    controllerbloodGroup.dispose();
     controllerBirthDate.dispose();
     controllerFName.dispose();
     controllerMName.dispose();

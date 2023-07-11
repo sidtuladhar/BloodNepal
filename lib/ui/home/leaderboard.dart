@@ -67,6 +67,10 @@ class _LeaderboardState extends State<Leaderboard> {
 Widget buildList(BuildContext context, int index, List leaderboardData) {
   int ind = index + 1;
 
+  if (leaderboardData[index]['mname'] == null) {
+    leaderboardData[index]['mname'] = "";
+  }
+
   Widget crown;
 
   if (ind == 1) {

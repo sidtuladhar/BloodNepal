@@ -190,12 +190,12 @@ class _SignupState extends State<Signup> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 5),
                         Icon(Icons.bloodtype_outlined,
                             color: Colors.grey[600], size: 25.0),
                         const SizedBox(width: 5),
                         SizedBox(
-                          width: 110,
+                          width: 118,
                           child: DropdownButtonFormField<String>(
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -223,8 +223,8 @@ class _SignupState extends State<Signup> {
                             }).toList(),
                             value: _selectedBloodGroup,
                             hint: const Text(
-                              'Blood type',
-                              style: TextStyle(fontSize: 17),
+                              'Blood Group',
+                              style: TextStyle(fontSize: 16),
                               textAlign: TextAlign.left,
                             ),
                             onChanged: (newValue) {

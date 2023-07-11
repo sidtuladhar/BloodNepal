@@ -52,7 +52,7 @@ class ApiService {
       String address,
       String phoneNumber,
       String birthDate,
-      String bloodType) async {
+      String bloodGroup) async {
     final url = Uri.parse("http://10.0.2.2:8000/api/editProfile");
 
     try {
@@ -64,7 +64,7 @@ class ApiService {
         "lname": lname,
         "birthDate": birthDate,
         "email": email,
-        "bloodType": bloodType,
+        "bloodGroup": bloodGroup,
       });
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
@@ -87,7 +87,7 @@ class ApiService {
       final response = await get(url);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-
+        print(responseData);
         return responseData;
       } else {
         print('Request failed with status: ${response.statusCode}');
