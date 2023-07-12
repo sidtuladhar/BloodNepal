@@ -2,7 +2,7 @@ import 'package:blood_nepal/ui/home/settings.dart';
 import 'package:blood_nepal/ui/home/history.dart';
 import 'package:blood_nepal/ui/home/general.dart';
 import 'package:blood_nepal/ui/home/leaderboard.dart';
-import 'package:blood_nepal/ui/home/pressure.dart';
+import 'package:blood_nepal/ui/home/requests.dart';
 import 'package:blood_nepal/ui/home/locations.dart';
 
 import 'package:flutter/material.dart';
@@ -117,7 +117,7 @@ class Home extends StatelessWidget {
                     children: <Widget>[
                       homeButton("Leaderboard", context, const Leaderboard(),
                           Icons.leaderboard),
-                      homeButton("Blood Pressure", context, const Pressure(),
+                      homeButton("Request Blood", context, const Requests(),
                           Icons.health_and_safety),
                     ]),
                 const SizedBox(height: 20),

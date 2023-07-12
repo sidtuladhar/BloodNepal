@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blood_nepal/ui/home/home.dart';
 import 'package:blood_nepal/api.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Leaderboard extends StatefulWidget {
@@ -12,7 +11,6 @@ class Leaderboard extends StatefulWidget {
 }
 
 class _LeaderboardState extends State<Leaderboard> {
-  final Box boxLogin = Hive.box("login");
   ApiService apiService = ApiService();
 
   @override
