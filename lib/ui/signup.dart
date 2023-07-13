@@ -202,7 +202,7 @@ class _SignupState extends State<Signup> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 160,
+                                  width: 158,
                                   child: DropdownButtonFormField<String>(
                                     decoration: InputDecoration(
                                         prefixIcon: Icon(
