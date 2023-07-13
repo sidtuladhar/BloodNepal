@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:blood_nepal/ui/home/home.dart';
+import 'package:blood_nepal/ui/widgets/requestblood.dart';
+import 'package:blood_nepal/ui/widgets/myrequest.dart';
 
 class Requests extends StatefulWidget {
   const Requests({super.key});
@@ -107,14 +109,11 @@ class _RequestsState extends State<Requests> {
               ),
             ),
           ),
-          SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(selectedText),
-            ),
-          )
+          if (selectedTab == 1) ...[
+            RequestBlood(), // Widget to show when the condition is true
+          ] else ...[
+            MyRequest(), // Widget to show when the condition is false
+          ],
         ],
       ),
     );
