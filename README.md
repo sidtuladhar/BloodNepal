@@ -5,6 +5,6 @@ and Laravel.
 
 # Screenshots
 
-<img alt="Opening" src="assets/screenshots/ss1.png">
-<img src="assets/screenshots/ss2.png" alt="Login Page">
-<img src="assets/screenshots/ss3.png" alt="Benefits ">
+![ss1.png](assets%2Fscreenshots%2Fss1.png)
+![ss2.png](assets%2Fscreenshots%2Fss2.png)
+![home.png](assets%2Fscreenshots%2Fhome.png)
