@@ -17,6 +17,7 @@ class _RequestsState extends State<Requests> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.red[50],
       appBar: AppBar(
         leading: IconButton(
@@ -42,6 +43,7 @@ class _RequestsState extends State<Requests> {
             textAlign: TextAlign.left),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(12.0),
@@ -113,7 +115,7 @@ class _RequestsState extends State<Requests> {
           if (selectedTab == 1) ...[
             const RequestBlood(), // Widget to show when the condition is true
           ] else ...[
-            const MyRequest(), // Widget to show when the condition is false
+            const MyRequests(), // Widget to show when the condition is false
           ],
         ],
       ),

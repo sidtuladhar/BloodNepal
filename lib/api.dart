@@ -56,7 +56,7 @@ class ApiService {
     final url = Uri.parse("http://10.0.2.2:8000/api/editProfile");
 
     try {
-      final response = await post(url, body: {
+      final response = await put(url, body: {
         "phoneNumber": phoneNumber,
         "fname": fname,
         "mname": mname,
@@ -85,6 +85,25 @@ class ApiService {
 
     try {
       final response = await get(url);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print(responseData);
+        return responseData;
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        return [];
+      }
+    } catch (error) {
+      print('The error is $error');
+      return [];
+    }
+  }
+
+  Future<List> getRequests(String phoneNumber) async {
+    final url = Uri.parse(
+        "http://10.0.2.2:8000/api/getRequests?phoneNumber=$phoneNumber");
+    try {
+      var response = await get(url);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         print(responseData);
