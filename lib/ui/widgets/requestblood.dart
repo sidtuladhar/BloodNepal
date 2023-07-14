@@ -24,6 +24,10 @@ class _RequestBloodState extends State<RequestBlood> {
   DateTime value = DateTime.now();
 
   final FocusNode _focusNodeQuantity = FocusNode();
+  final FocusNode _focusNodeAddress = FocusNode();
+  final FocusNode _focusNodeNeedDate = FocusNode();
+  final FocusNode _focusNodeBloodType = FocusNode();
+  final FocusNode _focusNodeBloodGroup = FocusNode();
 
   final TextEditingController _controllerAddress = TextEditingController();
   final TextEditingController _controllerQuantity = TextEditingController();
@@ -58,7 +62,14 @@ class _RequestBloodState extends State<RequestBlood> {
                           width: MediaQuery.of(context).size.width * 0.68,
                           child: DateTimeField(
                             controller: _controllerNeedDate,
+                            focusNode: _focusNodeNeedDate,
                             format: DateFormat("MMM d, yyyy h:mm a"),
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Please enter a date';
+                              }
+                              return null;
+                            },
                             onShowPicker: (context, currentValue) async {
                               await showCupertinoModalPopup(
                                   context: context,
@@ -93,6 +104,8 @@ class _RequestBloodState extends State<RequestBlood> {
                                   });
                               return value;
                             },
+                            onEditingComplete: () =>
+                                _focusNodeQuantity.requestFocus(),
                           ),
                         ),
                       ],
@@ -128,19 +141,24 @@ class _RequestBloodState extends State<RequestBlood> {
                             hintText: "Quantity",
                             hintStyle: const TextStyle(fontSize: 16)),
                         validator: (String? value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              int.parse(value) < 1) {
                             return "Enter a valid quantity.";
                           }
                           return null;
                         },
+                        onEditingComplete: () =>
+                            _focusNodeBloodGroup.requestFocus(),
                       ),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: DropdownButtonFormField<String>(
+                        focusNode: _focusNodeBloodGroup,
                         decoration: InputDecoration(
-                            prefixIcon: Icon(FontAwesomeIcons.fireFlameSimple,
-                                color: Colors.grey[600], size: 20),
+                            prefixIcon: Icon(Icons.bloodtype_outlined,
+                                color: Colors.grey[600], size: 25.0),
                             enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                     color: Colors.white, width: 1),
@@ -151,7 +169,7 @@ class _RequestBloodState extends State<RequestBlood> {
                                 borderRadius: BorderRadius.circular(10)),
                             fillColor: Colors.white,
                             filled: true,
-                            hintText: "Blood Type",
+                            hintText: "Blood Group",
                             hintStyle: const TextStyle(fontSize: 16)),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -160,9 +178,14 @@ class _RequestBloodState extends State<RequestBlood> {
                           return null;
                         },
                         items: <String>[
-                          'Whole Blood',
-                          'Platelets',
-                          'Plasma',
+                          'A+',
+                          'B+',
+                          'O+',
+                          'AB+',
+                          'A-',
+                          'B-',
+                          'O-',
+                          'AB-',
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -171,9 +194,9 @@ class _RequestBloodState extends State<RequestBlood> {
                                 textAlign: TextAlign.center),
                           );
                         }).toList(),
-                        value: _selectedBloodType,
+                        value: _selectedBloodGroup,
                         onChanged: (newValue) {
-                          _selectedBloodType = newValue!;
+                          _selectedBloodGroup = newValue!;
                           setState(() {
                             newValue;
                           });
@@ -187,10 +210,11 @@ class _RequestBloodState extends State<RequestBlood> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
+                SizedBox(
                     width: MediaQuery.of(context).size.width * 0.35,
                     child: TextFormField(
                       controller: _controllerAddress,
+                      focusNode: _focusNodeAddress,
                       keyboardType: TextInputType.streetAddress,
                       decoration: InputDecoration(
                           prefixIcon:
@@ -213,13 +237,16 @@ class _RequestBloodState extends State<RequestBlood> {
                         }
                         return null;
                       },
+                      onEditingComplete: () =>
+                          _focusNodeBloodType.requestFocus(),
                     )),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.45,
                   child: DropdownButtonFormField<String>(
+                    focusNode: _focusNodeBloodType,
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.bloodtype_outlined,
-                            color: Colors.grey[600], size: 25.0),
+                        prefixIcon: Icon(FontAwesomeIcons.fireFlameSimple,
+                            color: Colors.grey[600], size: 20),
                         enabledBorder: OutlineInputBorder(
                             borderSide:
                                 const BorderSide(color: Colors.white, width: 1),
@@ -230,7 +257,7 @@ class _RequestBloodState extends State<RequestBlood> {
                             borderRadius: BorderRadius.circular(10)),
                         fillColor: Colors.white,
                         filled: true,
-                        hintText: "Blood Group",
+                        hintText: "Blood Type",
                         hintStyle: const TextStyle(fontSize: 16)),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -239,14 +266,9 @@ class _RequestBloodState extends State<RequestBlood> {
                       return null;
                     },
                     items: <String>[
-                      'A+',
-                      'B+',
-                      'O+',
-                      'AB+',
-                      'A-',
-                      'B-',
-                      'O-',
-                      'AB-',
+                      'Whole Blood',
+                      'Platelets',
+                      'Plasma',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -255,9 +277,9 @@ class _RequestBloodState extends State<RequestBlood> {
                             textAlign: TextAlign.center),
                       );
                     }).toList(),
-                    value: _selectedBloodGroup,
+                    value: _selectedBloodType,
                     onChanged: (newValue) {
-                      _selectedBloodGroup = newValue!;
+                      _selectedBloodType = newValue!;
                       setState(() {
                         newValue;
                       });
