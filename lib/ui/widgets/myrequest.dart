@@ -48,7 +48,7 @@ class _MyRequestsState extends State<MyRequests> {
                   .map(
                     (data) => DataRow(
                       cells: [
-                        DataCell(Text(DateFormat('MMM d, yyyy\nh:mm a')
+                        DataCell(Text(DateFormat('MMM d, yyyy')
                             .format(DateTime.parse(data['requestDate'])))),
                         DataCell(Text(data['bloodGroup'])),
                         DataCell(Text(data['bloodType'])),

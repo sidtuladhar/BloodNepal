@@ -106,7 +106,6 @@ class ApiService {
       var response = await get(url);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        print(responseData);
         return responseData;
       } else {
         print('Request failed with status: ${response.statusCode}');
@@ -115,6 +114,31 @@ class ApiService {
     } catch (error) {
       print('The error is $error');
       return [];
+    }
+  }
+
+  Future<bool> sendRequest(String phoneNumber, String bloodGroup, int quantity,
+      String bloodType, String address, DateTime needByDate) async {
+    final url = Uri.parse("http://10.0.2.2:8000/api/sendRequest");
+    try {
+      var response = await post(url, body: {
+        "phoneNumber": phoneNumber,
+        "bloodGroup": bloodGroup,
+        "quantity": quantity.toString(),
+        "bloodType": bloodType,
+        "address": address,
+        "needByDate": needByDate.toString(),
+      });
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData['success'];
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        return false;
+      }
+    } catch (error) {
+      print('The error is $error');
+      return false;
     }
   }
 }
