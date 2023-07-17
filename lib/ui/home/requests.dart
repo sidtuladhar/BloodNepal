@@ -12,7 +12,6 @@ class Requests extends StatefulWidget {
 
 class _RequestsState extends State<Requests> {
   var selectedTab = 1;
-  var selectedText = "First Tab";
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +68,6 @@ class _RequestsState extends State<Requests> {
                       onPressed: () {
                         setState(() {
                           selectedTab = 1;
-                          selectedText = "First Tab";
                         });
                       },
                       child: Text(
@@ -94,7 +92,6 @@ class _RequestsState extends State<Requests> {
                       onPressed: () {
                         setState(() {
                           selectedTab = 2;
-                          selectedText = "Second Tab";
                         });
                       },
                       child: Text(

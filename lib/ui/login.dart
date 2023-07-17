@@ -43,10 +43,10 @@ class _LoginState extends State<Login> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFFFF0000),
-                Color(0xFFFF8080),
-                Color(0xFFFF8080),
-                Color(0xFFFF0000),
+                Color(0xFF0056FF),
+                Color(0xFF80ACFF),
+                Color(0xFF80ACFF),
+                Color(0xFF0050F3),
                 Color(0xFFFFF5FB),
                 Color(0xFFFFF5FB),
                 Color(0xFFFFF5FB),
@@ -56,7 +56,12 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               const SizedBox(height: 60),
-              Center(child: Image.asset('assets/images/logo.png', height: 230)),
+              Center(
+                  child: Image.asset(
+                'assets/images/logo.png',
+                height: 220,
+                width: 400,
+              )),
               const SizedBox(height: 30),
               Expanded(
                 child: Container(
@@ -227,10 +232,6 @@ class _LoginState extends State<Login> {
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              const Text(
-                                  "In case of an emergency requiring blood as soon as possible, "
-                                  "please call 1234567890.",
-                                  style: TextStyle(fontSize: 15, height: 1.2))
                             ],
                           ),
                         ),
