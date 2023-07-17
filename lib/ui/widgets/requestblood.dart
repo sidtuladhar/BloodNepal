@@ -21,13 +21,11 @@ class _RequestBloodState extends State<RequestBlood> {
   ApiService apiService = ApiService();
 
   String? _selectedBloodGroup;
-
-  //TODO: Make isChecked1 and isChecked2 mandatory
   bool isChecked1 = false;
   bool isChecked2 = false;
   String? _selectedBloodType;
   bool isDateSelected = false;
-  String? needByDateInString;
+  String needByDateInString = "Need by Date";
   DateTime value = DateTime.now();
 
   final FocusNode _focusNodeQuantity = FocusNode();
@@ -38,11 +36,11 @@ class _RequestBloodState extends State<RequestBlood> {
 
   final TextEditingController _controllerAddress = TextEditingController();
   final TextEditingController _controllerQuantity = TextEditingController();
-  final TextEditingController _controllerNeedDate = TextEditingController();
+  final TextEditingController _controllerNeedDate =
+      TextEditingController(text: "Need by Date");
 
   @override
   Widget build(BuildContext context) {
-    _controllerNeedDate.text = "Select Need By Date";
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -66,7 +64,7 @@ class _RequestBloodState extends State<RequestBlood> {
                   const SizedBox(width: 10.0),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.08,
-                    width: MediaQuery.of(context).size.width * 0.68,
+                    width: MediaQuery.of(context).size.width * 0.65,
                     child: DateTimeField(
                       controller: _controllerNeedDate,
                       focusNode: _focusNodeNeedDate,
@@ -94,7 +92,9 @@ class _RequestBloodState extends State<RequestBlood> {
                                             _controllerNeedDate.text =
                                                 DateFormat('MMM d, yyyy h:mm a')
                                                     .format(date);
+                                            currentValue = date;
                                             value = date;
+                                            isDateSelected = true;
                                           });
                                         },
                                       ),
@@ -121,7 +121,7 @@ class _RequestBloodState extends State<RequestBlood> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         //height: MediaQuery.of(context).size.height * 0.08,
                         width: MediaQuery.of(context).size.width * 0.35,
                         child: TextFormField(
@@ -292,38 +292,29 @@ class _RequestBloodState extends State<RequestBlood> {
               ),
             ),
             const SizedBox(height: 20),
-            Row(
-              children: [
-                Checkbox(
-                  value: isChecked1,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isChecked1 = value!;
-                    });
-                  },
-                ),
-                const Text(
-                  "I understand that this request will be posted \non the app for all the organizations to see.",
-                  style: TextStyle(fontSize: 14),
-                )
-              ],
+            CheckboxListTile(
+              title: const Text(
+                  'I agree that this request will be public for all organizations to see.'),
+              dense: true,
+              value: isChecked1,
+              onChanged: (bool? value) {
+                setState(() {
+                  isChecked1 = value!;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
             ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Checkbox(
-                  value: isChecked2,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isChecked2 = value!;
-                    });
-                  },
-                ),
-                const Text(
-                  "I understand that I will be charged a fee if \nI do not return the blood bag within 24 hours.",
-                  style: TextStyle(fontSize: 14),
-                )
-              ],
+            CheckboxListTile(
+              title: const Text(
+                  'I agree that I will be charged a fee if the blood bag is not returned within 24 hours.'),
+              dense: true,
+              value: isChecked2,
+              onChanged: (bool? value) {
+                setState(() {
+                  isChecked2 = value!;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
             ),
             const SizedBox(height: 30),
             Column(children: [
@@ -336,16 +327,7 @@ class _RequestBloodState extends State<RequestBlood> {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      bool isSuccessful = await ApiService().sendRequest(
-                        loginBox.get('phoneNumber'),
-                        _selectedBloodGroup!,
-                        int.parse(_controllerQuantity.text),
-                        _selectedBloodType!,
-                        _controllerAddress.text,
-                        value,
-                      );
-                      if (isSuccessful) {
-                        if (!mounted) return;
+                      if (!isChecked1 || !isChecked2) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           width: 200,
                           backgroundColor:
@@ -355,19 +337,21 @@ class _RequestBloodState extends State<RequestBlood> {
                           ),
                           behavior: SnackBarBehavior.floating,
                           content: const Text(
-                              "Registered Successfully! Check the 'My Requests' tab to see your request."),
+                              "Please agree to the terms and conditions."),
                         ));
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return Home();
-                            },
-                          ),
-                        );
+                        return;
                       } else {
-                        if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        bool isSuccessful = await ApiService().sendRequest(
+                          loginBox.get('phoneNumber'),
+                          _selectedBloodGroup!,
+                          int.parse(_controllerQuantity.text),
+                          _selectedBloodType!,
+                          _controllerAddress.text,
+                          value,
+                        );
+                        if (isSuccessful) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             width: 200,
                             backgroundColor:
                                 Theme.of(context).colorScheme.secondary,
@@ -376,7 +360,29 @@ class _RequestBloodState extends State<RequestBlood> {
                             ),
                             behavior: SnackBarBehavior.floating,
                             content: const Text(
-                                "Something went wrong. Please try again.")));
+                                "Registered Successfully! Check the 'My Requests' tab to see your request."),
+                          ));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return Home();
+                              },
+                            ),
+                          );
+                        } else {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              width: 200,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              content: const Text(
+                                  "Something went wrong. Please try again.")));
+                        }
                       }
                     }
                   },
@@ -385,5 +391,15 @@ class _RequestBloodState extends State<RequestBlood> {
             ]),
           ])),
     );
+  }
+
+  @override
+  void dispose() {
+    _controllerQuantity.dispose();
+    _controllerAddress.dispose();
+    _focusNodeQuantity.dispose();
+    _focusNodeAddress.dispose();
+    _focusNodeBloodType.dispose();
+    super.dispose();
   }
 }
