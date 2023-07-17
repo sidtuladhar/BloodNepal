@@ -34,7 +34,23 @@ class _MyRequestsState extends State<MyRequests> {
 
             return DataTable(
               sortColumnIndex: 0,
+              sortAscending: true,
               columnSpacing: 15,
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black,
+                    width: 2,
+                  ),
+                ),
+              ),
+              // creative heading row decoration
+
+              headingRowColor: MaterialStateColor.resolveWith(
+                  (states) => const Color(0xFFFDC3C9)),
+              headingRowHeight: 50,
+              headingTextStyle: const TextStyle(
+                  fontSize: 14, fontFamily: "Rubik", color: Colors.black),
               columns: const <DataColumn>[
                 DataColumn(label: Text('Request \nDate')),
                 DataColumn(label: Text('Blood \nGroup')),
@@ -42,7 +58,7 @@ class _MyRequestsState extends State<MyRequests> {
                 DataColumn(label: Text('Need \nDate')),
                 DataColumn(label: Text('Quantity'), numeric: true),
                 DataColumn(label: Text('Address')),
-                DataColumn(label: Text('Fulfilled \nBy')),
+                DataColumn(label: Text('Fulfilled By')),
               ],
               rows: leaderboardData
                   .map(

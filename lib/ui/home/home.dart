@@ -118,7 +118,7 @@ class Home extends StatelessWidget {
                       homeButton("Leaderboard", context, const Leaderboard(),
                           Icons.leaderboard),
                       homeButton("Request Blood", context, const Requests(),
-                          Icons.health_and_safety),
+                          Icons.handshake_rounded),
                     ]),
                 const SizedBox(height: 20),
                 Row(
