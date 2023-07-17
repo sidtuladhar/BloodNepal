@@ -38,29 +38,26 @@ class _LoginState extends State<Login> {
       body: Center(
         child: Container(
           alignment: Alignment.center,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
               colors: [
-                Theme.of(context).primaryColor,
-                Theme.of(context).colorScheme.secondary,
-                Theme.of(context).primaryColor
+                Color(0xFFFF0000),
+                Color(0xFFFF8080),
+                Color(0xFFFF8080),
+                Color(0xFFFF0000),
+                Color(0xFFFFF5FB),
+                Color(0xFFFFF5FB),
+                Color(0xFFFFF5FB),
               ],
             ),
           ),
           child: Column(
             children: [
               const SizedBox(height: 60),
-              const Icon(Icons.bloodtype_sharp,
-                  color: Color(0xffE0E1F6), size: 150),
-              const SizedBox(height: 5),
-              const Text("BloodNepal",
-                  style: TextStyle(
-                      fontSize: 50,
-                      color: Color(0xffE0E1F6),
-                      fontWeight: FontWeight.bold),
-                  selectionColor: Colors.black),
-              const SizedBox(height: 50),
+              Center(child: Image.asset('assets/images/logo.png', height: 230)),
+              const SizedBox(height: 30),
               Expanded(
                 child: Container(
                   decoration: const BoxDecoration(
