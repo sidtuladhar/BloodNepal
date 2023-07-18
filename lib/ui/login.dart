@@ -56,12 +56,14 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               const SizedBox(height: 60),
-              Center(
+              Container(
+                  padding:
+                      const EdgeInsets.only(top: 10, bottom: 10, right: 15),
                   child: Image.asset(
-                'assets/images/logo.png',
-                height: 220,
-                width: 400,
-              )),
+                    'assets/images/logo.png',
+                    height: 220,
+                    width: 400,
+                  )),
               const SizedBox(height: 30),
               Expanded(
                 child: Container(

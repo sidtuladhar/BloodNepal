@@ -30,7 +30,6 @@ class _MyRequestsState extends State<MyRequests> {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData) {
             final leaderboardData = snapshot.data as List;
-            //DateTime date = DateTime.parse(inputDate);
 
             return DataTable(
               sortColumnIndex: 0,

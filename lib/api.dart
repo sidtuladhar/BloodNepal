@@ -117,6 +117,24 @@ class ApiService {
     }
   }
 
+  Future<List> getDonations(String phoneNumber) async {
+    final url = Uri.parse(
+        "http://10.0.2.2:8000/api/getDonations?phoneNumber=$phoneNumber");
+    try {
+      var response = await get(url);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData;
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        return [];
+      }
+    } catch (error) {
+      print('The error is $error');
+      return [];
+    }
+  }
+
   Future<bool> sendRequest(String phoneNumber, String bloodGroup, int quantity,
       String bloodType, String address, DateTime needByDate) async {
     final url = Uri.parse("http://10.0.2.2:8000/api/sendRequest");
