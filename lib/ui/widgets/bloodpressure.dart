@@ -24,12 +24,11 @@ class _BloodPressureState extends State<BloodPressure> {
         FlSpot(7, 63),
         FlSpot(10, 60),
         FlSpot(12, 80),
-        FlSpot(13, 72),
       ],
     ),
     LineChartBarData(
       isCurved: true,
-      color: Colors.greenAccent,
+      color: Colors.redAccent,
       barWidth: 6,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: true),
@@ -41,7 +40,6 @@ class _BloodPressureState extends State<BloodPressure> {
         FlSpot(7, 93),
         FlSpot(10, 105),
         FlSpot(12, 120),
-        FlSpot(13, 129),
       ],
     )
   ];
@@ -54,19 +52,16 @@ class _BloodPressureState extends State<BloodPressure> {
     Widget text;
     switch (value.toInt()) {
       case 1:
-        text = const Text('JAN', style: style);
+        text = const Text('JAN\n2023', style: style);
         break;
-      case 4:
-        text = const Text('APR', style: style);
+      case 5:
+        text = const Text('MAY\n2023', style: style);
         break;
-      case 7:
-        text = const Text('JUL', style: style);
-        break;
-      case 10:
-        text = const Text('OCT', style: style);
+      case 8:
+        text = const Text('AUG\n2023', style: style);
         break;
       case 12:
-        text = const Text('DEC', style: style);
+        text = const Text('DEC\n2023', style: style);
         break;
       default:
         text = const Text('');
@@ -131,7 +126,11 @@ class _BloodPressureState extends State<BloodPressure> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(right: 30, left: 6),
+        padding: const EdgeInsets.only(
+          right: 30,
+          left: 6,
+          bottom: 50,
+        ),
         child: LineChart(LineChartData(
           lineTouchData: LineTouchData(
             handleBuiltInTouches: true,
@@ -147,7 +146,7 @@ class _BloodPressureState extends State<BloodPressure> {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 30,
+                reservedSize: 50,
                 interval: 1,
                 getTitlesWidget: bottomTitleWidgets,
               ),
