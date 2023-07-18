@@ -29,7 +29,7 @@ class _MyRequestsState extends State<MyRequests> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData) {
-            final leaderboardData = snapshot.data as List;
+            final requestData = snapshot.data as List;
 
             return DataTable(
               sortColumnIndex: 0,
@@ -59,7 +59,7 @@ class _MyRequestsState extends State<MyRequests> {
                 DataColumn(label: Text('Address')),
                 DataColumn(label: Text('Fulfilled By')),
               ],
-              rows: leaderboardData
+              rows: requestData
                   .map(
                     (data) => DataRow(
                       cells: [

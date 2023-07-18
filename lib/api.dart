@@ -117,14 +117,23 @@ class ApiService {
     }
   }
 
-  Future<List> getDonations(String phoneNumber) async {
+  getDonations(String phoneNumber, String field) async {
     final url = Uri.parse(
         "http://10.0.2.2:8000/api/getDonations?phoneNumber=$phoneNumber");
     try {
       var response = await get(url);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        return responseData;
+        final donationData = responseData['donations'];
+        final totalDonationsData = responseData['totalDonations'];
+
+        if (field == 'donations') {
+          return donationData;
+        } else if (field == 'totalDonations') {
+          return totalDonationsData;
+        } else {
+          return responseData;
+        }
       } else {
         print('Request failed with status: ${response.statusCode}');
         return [];

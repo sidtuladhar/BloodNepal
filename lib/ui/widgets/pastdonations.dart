@@ -21,16 +21,21 @@ class _PastDonationsState extends State<PastDonations> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
-          child: FutureBuilder<List>(
-        future: apiService.getDonations(phoneNumber),
+          child: FutureBuilder(
+        future: apiService.getDonations(phoneNumber, ""),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData) {
-            final leaderboardData = snapshot.data as List;
+            final jsonData = snapshot.data as Map<String, dynamic>;
 
+            // Extract the donations list from the JSON data
+            final donationData = jsonData['donations'] as List;
+            // Extract the totalDonations count from the JSON data
+            final totalDonations = jsonData['totalDonations'] as int;
+            _boxLogin.put("totalDonations", totalDonations);
             return DataTable(
               sortColumnIndex: 0,
               sortAscending: true,
@@ -57,7 +62,7 @@ class _PastDonationsState extends State<PastDonations> {
                 DataColumn(label: Text('Blood\nPressure'), numeric: true),
                 DataColumn(label: Text('Quantity'), numeric: true),
               ],
-              rows: leaderboardData
+              rows: donationData
                   .map(
                     (data) => DataRow(
                       cells: [
