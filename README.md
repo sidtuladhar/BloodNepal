@@ -1,6 +1,7 @@
-# BloodNepal - Blood Donation app
+# UnlimitedBlood - Blood Donation app
 
-BloodNepal is a blood donation app that connects blood donors, blood banks, and recipients. It is built using Flutter
+UnlimitedBlood is a blood donation app that connects blood donors, blood banks, and recipients. It is built using
+Flutter
 and Laravel.
 
 # Screenshots
