@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:blood_nepal/api.dart';
+import 'package:hive/hive.dart';
 
 class BloodPressure extends StatefulWidget {
   const BloodPressure({super.key});
@@ -9,40 +11,8 @@ class BloodPressure extends StatefulWidget {
 }
 
 class _BloodPressureState extends State<BloodPressure> {
-  List<LineChartBarData> lineChartBarDataList = [
-    LineChartBarData(
-      isCurved: true,
-      color: Colors.blueAccent,
-      barWidth: 6,
-      isStrokeCapRound: true,
-      dotData: const FlDotData(show: true),
-      belowBarData: BarAreaData(show: false),
-      spots: const [
-        FlSpot(1, 70),
-        FlSpot(3, 71),
-        FlSpot(5, 75),
-        FlSpot(7, 63),
-        FlSpot(10, 60),
-        FlSpot(12, 80),
-      ],
-    ),
-    LineChartBarData(
-      isCurved: true,
-      color: Colors.redAccent,
-      barWidth: 6,
-      isStrokeCapRound: true,
-      dotData: const FlDotData(show: true),
-      belowBarData: BarAreaData(show: false),
-      spots: const [
-        FlSpot(1, 110),
-        FlSpot(3, 100),
-        FlSpot(5, 98),
-        FlSpot(7, 93),
-        FlSpot(10, 105),
-        FlSpot(12, 120),
-      ],
-    )
-  ];
+  ApiService apiService = ApiService();
+  final Box _boxLogin = Hive.box("login");
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
@@ -124,61 +94,151 @@ class _BloodPressureState extends State<BloodPressure> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          right: 30,
-          left: 6,
-          bottom: 50,
-        ),
-        child: LineChart(LineChartData(
-          lineTouchData: LineTouchData(
-            handleBuiltInTouches: true,
-            touchTooltipData: LineTouchTooltipData(
-              tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
-            ),
-          ),
-          minX: 0,
-          maxX: 13,
-          minY: 45,
-          maxY: 135,
-          titlesData: FlTitlesData(
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 50,
-                interval: 1,
-                getTitlesWidget: bottomTitleWidgets,
+    String phoneNumber = _boxLogin.get("phoneNumber");
+    return FutureBuilder(
+        future: apiService.getDonations(phoneNumber, "donations"),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.hasData) {
+            final jsonData = snapshot.data as List<dynamic>;
+            List<FlSpot> upperSpots = [];
+            List<FlSpot> lowerSpots = [];
+
+            int maxYearInteger =
+                int.parse(jsonData[0]["donationDate"].substring(0, 4));
+            int minYearInteger = int.parse(
+                jsonData[jsonData.length - 1]["donationDate"].substring(0, 4));
+
+            for (var bloodPressure in jsonData) {
+              String donationDate = bloodPressure["donationDate"];
+              int year = int.parse(donationDate.substring(0, 4));
+              int month = int.parse(donationDate.substring(5, 7));
+              int yearMonthInteger = (year - minYearInteger) * 12 + month;
+              int upperBP = bloodPressure["upperBP"];
+              int lowerBP = bloodPressure["lowerBP"];
+
+              upperSpots
+                  .add(FlSpot(yearMonthInteger.toDouble(), upperBP.toDouble()));
+              lowerSpots
+                  .add(FlSpot(yearMonthInteger.toDouble(), lowerBP.toDouble()));
+            }
+
+            LineChartBarData upperLineChartBarData = LineChartBarData(
+              //isCurved: true,
+              color: Colors.blueAccent,
+              barWidth: 6,
+              isStrokeCapRound: true,
+              dotData: const FlDotData(show: true),
+              belowBarData: BarAreaData(show: false),
+              spots: upperSpots,
+            );
+
+            LineChartBarData lowerLineChartBarData = LineChartBarData(
+              //isCurved: true,
+              color: Colors.redAccent,
+              barWidth: 6,
+              isStrokeCapRound: true,
+              dotData: const FlDotData(show: true),
+              belowBarData: BarAreaData(show: false),
+              spots: lowerSpots,
+            );
+            List<LineChartBarData> lineChartBarDataList = [
+              upperLineChartBarData,
+              lowerLineChartBarData,
+            ];
+
+            Widget bottomTitleWidgets(double value, TitleMeta meta) {
+              const style = TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              );
+
+              int oldestYear = minYearInteger;
+              int year = oldestYear + value.toInt() ~/ 12;
+              int month = value.toInt() % 12;
+              String monthText = '';
+
+              switch (month) {
+                case 1:
+                  monthText = 'JAN';
+                  break;
+                case 7:
+                  monthText = 'JUL';
+                  break;
+              }
+
+              String labelText = monthText != '' ? '$monthText\n$year' : "";
+
+              return SideTitleWidget(
+                axisSide: meta.axisSide,
+                space: 10,
+                child: Text(labelText, style: style),
+              );
+            }
+
+            return Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 30,
+                  right: 30,
+                  left: 6,
+                  bottom: 50,
+                ),
+                child: LineChart(LineChartData(
+                  lineTouchData: LineTouchData(
+                    handleBuiltInTouches: true,
+                    touchTooltipData: LineTouchTooltipData(
+                      tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+                    ),
+                  ),
+                  minX: 0,
+                  maxX: (maxYearInteger.toDouble() - minYearInteger) * 12 + 12,
+                  minY: 50,
+                  maxY: 135,
+                  titlesData: FlTitlesData(
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 50,
+                        interval: 1,
+                        getTitlesWidget: bottomTitleWidgets,
+                      ),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        getTitlesWidget: leftTitleWidgets,
+                        showTitles: true,
+                        interval: 1,
+                        reservedSize: 50,
+                      ),
+                    ),
+                  ),
+                  borderData: FlBorderData(
+                    show: true,
+                    border: const Border(
+                      bottom: BorderSide(color: Colors.pinkAccent, width: 4),
+                      left: BorderSide(color: Colors.transparent),
+                      right: BorderSide(color: Colors.transparent),
+                      top: BorderSide(color: Colors.transparent),
+                    ),
+                  ),
+                  gridData: const FlGridData(show: false),
+                  lineBarsData: lineChartBarDataList,
+                )),
               ),
-            ),
-            rightTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            topTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                getTitlesWidget: leftTitleWidgets,
-                showTitles: true,
-                interval: 1,
-                reservedSize: 50,
-              ),
-            ),
-          ),
-          borderData: FlBorderData(
-            show: true,
-            border: const Border(
-              bottom: BorderSide(color: Colors.pinkAccent, width: 4),
-              left: BorderSide(color: Colors.transparent),
-              right: BorderSide(color: Colors.transparent),
-              top: BorderSide(color: Colors.transparent),
-            ),
-          ),
-          gridData: const FlGridData(show: false),
-          lineBarsData: lineChartBarDataList,
-        )),
-      ),
-    );
+            );
+          } else {
+            return const Text('No data available');
+          }
+        });
   }
 }

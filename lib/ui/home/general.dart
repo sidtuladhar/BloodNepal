@@ -100,7 +100,7 @@ class _GeneralState extends State<General> {
           title: Text(question,
               style: const TextStyle(
                   letterSpacing: 1.2,
-                  fontSize: 22,
+                  fontSize: 20,
                   color: Colors.white,
                   fontFamily: "Rubik")),
           trailing: const Icon(Icons.arrow_drop_up_rounded, size: 50),
