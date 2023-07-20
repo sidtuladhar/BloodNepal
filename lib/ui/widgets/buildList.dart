@@ -3,6 +3,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Widget buildList(BuildContext context, int index, List leaderboardData) {
   int ind = index + 1;
+  double leftPadding = 38;
+
+  if (leaderboardData[index]['count'].toString().length == 2) {
+    leftPadding = 33;
+  } else {
+    leftPadding = 38;
+  }
 
   if (leaderboardData[index]['mname'] == null) {
     leaderboardData[index]['mname'] = "";
@@ -13,59 +20,30 @@ Widget buildList(BuildContext context, int index, List leaderboardData) {
   if (ind == 1) {
     crown = const Padding(
         padding: EdgeInsets.only(right: 0.0),
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Center(
-                child: Icon(
-              FontAwesomeIcons.medal,
-              size: 36,
-              color: Colors.yellow,
-            )),
-            Padding(
-              padding: EdgeInsets.only(left: 8.0, top: 6),
-            )
-          ],
-        ));
+        child: Center(
+            child: Icon(
+          FontAwesomeIcons.medal,
+          size: 36,
+          color: Colors.yellow,
+        )));
   } else if (ind == 2) {
     crown = Padding(
         padding: const EdgeInsets.only(right: 0.0),
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Center(
-                child: Icon(
-              FontAwesomeIcons.medal,
-              size: 36,
-              color: Colors.grey[300],
-            )),
-            const Padding(
-              padding: EdgeInsets.only(left: 8.0, top: 6),
-            )
-          ],
-        ));
+        child: Center(
+            child: Icon(
+          FontAwesomeIcons.medal,
+          size: 36,
+          color: Colors.grey[300],
+        )));
   } else if (ind == 3) {
     crown = Padding(
         padding: const EdgeInsets.only(right: 0.0),
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Center(
-                child: Icon(
-              FontAwesomeIcons.medal,
-              size: 36,
-              color: Colors.orange[300],
-            )),
-            const Padding(
-              padding: EdgeInsets.only(left: 8.0, top: 6),
-              child: Center(
-                  child: Text(
-                '3',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              )),
-            )
-          ],
-        ));
+        child: Center(
+            child: Icon(
+          FontAwesomeIcons.medal,
+          size: 36,
+          color: Colors.orange[300],
+        )));
   } else {
     crown = CircleAvatar(
         backgroundColor: Colors.grey,
@@ -80,11 +58,14 @@ Widget buildList(BuildContext context, int index, List leaderboardData) {
   return Padding(
     padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 10),
     child: Container(
-      height: 80,
+      height: 60,
       decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5.0)]),
+        gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xff92bdef), Color(0xffa2d2ff)]),
+        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+      ),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -145,19 +126,27 @@ Widget buildList(BuildContext context, int index, List leaderboardData) {
           ),
           Align(
             alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 25, bottom: 8.0, top: 8),
-              child: Text(
-                textAlign: TextAlign.center,
-                "${leaderboardData[index]['count']}",
-                style: const TextStyle(
-                    color: Colors.black,
-                    //fontWeight: FontWeight.bold,
-                    fontFamily: "Rubik",
-                    fontSize: 22),
+            child: Stack(children: [
+              const Padding(
+                  padding:
+                      EdgeInsets.only(left: 20.0, top: 5, bottom: 5, right: 20),
+                  child: Icon(
+                    FontAwesomeIcons.certificate,
+                    size: 50,
+                    color: Color(0xfff6e2bd),
+                  )),
+              Padding(
+                padding: EdgeInsets.only(left: leftPadding, top: 17),
+                child: Text(
+                  "${leaderboardData[index]['count']}",
+                  style: const TextStyle(
+                      color: Colors.black,
+                      //fontWeight: FontWeight.bold,
+                      fontFamily: "Rubik",
+                      fontSize: 22),
+                ),
               ),
-            ),
+            ]),
           )
         ],
       ),
