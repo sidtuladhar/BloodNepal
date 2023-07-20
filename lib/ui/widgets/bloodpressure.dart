@@ -127,7 +127,8 @@ class _BloodPressureState extends State<BloodPressure> {
             }
 
             LineChartBarData upperLineChartBarData = LineChartBarData(
-              //isCurved: true,
+              isCurved: true,
+              curveSmoothness: 0.2,
               color: Colors.blueAccent,
               barWidth: 6,
               isStrokeCapRound: true,
@@ -137,7 +138,8 @@ class _BloodPressureState extends State<BloodPressure> {
             );
 
             LineChartBarData lowerLineChartBarData = LineChartBarData(
-              //isCurved: true,
+              isCurved: true,
+              curveSmoothness: 0.2,
               color: Colors.redAccent,
               barWidth: 6,
               isStrokeCapRound: true,
