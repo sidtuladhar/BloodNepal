@@ -8,7 +8,7 @@ Widget buildList(BuildContext context, int index, List leaderboardData) {
   if (leaderboardData[index]['count'].toString().length == 2) {
     leftPadding = 33;
   } else {
-    leftPadding = 38;
+    leftPadding = 39;
   }
 
   if (leaderboardData[index]['mname'] == null) {
