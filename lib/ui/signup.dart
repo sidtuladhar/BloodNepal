@@ -1,3 +1,4 @@
+import 'package:blood_nepal/ui/OTP.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,7 +35,7 @@ class _SignupState extends State<Signup> {
   final TextEditingController _controllerConFirmPassword =
       TextEditingController();
 
-  final Box _boxAccounts = Hive.box("login");
+  final Box _boxLogin = Hive.box("login");
   bool _obscurePassword = true;
 
   @override
@@ -493,32 +494,17 @@ class _SignupState extends State<Signup> {
                               onPressed: () {
                                 if (_formKey.currentState?.validate() ??
                                     false) {
-                                  _boxAccounts.put(
-                                    _controllerPhoneNumber.hashCode,
-                                    _controllerConFirmPassword.text,
-                                  );
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      width: 200,
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      behavior: SnackBarBehavior.floating,
-                                      content:
-                                          const Text("Registered Successfully"),
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const OTP();
+                                      },
                                     ),
                                   );
-
-                                  _formKey.currentState?.reset();
-
-                                  Navigator.pop(context);
                                 }
                               },
-                              child: const Text("Register",
+                              child: const Text("Next",
                                   style: TextStyle(fontSize: 20))),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

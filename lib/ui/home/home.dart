@@ -7,6 +7,7 @@ import 'package:blood_nepal/ui/home/locations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Home extends StatelessWidget {
   final Box boxLogin = Hive.box("login");
