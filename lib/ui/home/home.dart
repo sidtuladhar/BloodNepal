@@ -9,10 +9,40 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  Position? currentPosition;
   final Box boxLogin = Hive.box("login");
 
-  Home({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      await Geolocator.requestPermission();
+    } else if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        currentPosition = position;
+      } catch (e) {
+        print("Error: $e");
+        // Handle error cases here
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +50,7 @@ class Home extends StatelessWidget {
     String lastName = boxLogin.get("lname");
     final String? bloodGroup = boxLogin.get("bloodGroup");
     final int totalDonations = boxLogin.get("totalDonations");
+    String currentPos = currentPosition.toString();
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -102,7 +133,7 @@ class Home extends StatelessWidget {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-                getAppointment(),
+                getAppointment(currentPos),
                 const SizedBox(height: 20),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -171,7 +202,7 @@ homeButton(String text, context, target, IconData icon) {
       ));
 }
 
-Widget getAppointment() {
+Widget getAppointment(String text) {
   return Container(
     width: double.infinity,
     height: 150,
@@ -180,7 +211,6 @@ Widget getAppointment() {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey, width: .1)),
     padding: const EdgeInsets.all(18),
-    child: const Text("There are no events scheduled at the moment.",
-        style: TextStyle(fontSize: 20)),
+    child: Text(text, style: const TextStyle(fontSize: 18)),
   );
 }
