@@ -9,6 +9,8 @@ void main() async {
 }
 
 Future<void> _initHive() async {
+  Box boxLogin;
   await Hive.initFlutter();
-  await Hive.openBox("login");
+  boxLogin = await Hive.openBox("login");
+  boxLogin.clear(); // Clear the "login" box
 }

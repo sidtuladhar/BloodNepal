@@ -2,6 +2,8 @@ import 'package:blood_nepal/ui/OTP.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:blood_nepal/api.dart';
+import 'package:blood_nepal/ui/widgets/generate_otp.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -11,9 +13,12 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  ApiService apiService = ApiService();
+
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final FocusNode _focusNodeEmail = FocusNode();
+  final FocusNode _focusNodeAddress = FocusNode();
   final FocusNode _focusNodeFirstName = FocusNode();
   final FocusNode _focusNodeMiddleName = FocusNode();
   final FocusNode _focusNodeLastName = FocusNode();
@@ -21,6 +26,7 @@ class _SignupState extends State<Signup> {
   final FocusNode _focusNodeConfirmPassword = FocusNode();
 
   String? _selectedBloodGroup;
+  String errorMessage = "";
   String? _selectedGender;
   String? birthDateInString;
   DateTime? birthDate;
@@ -31,6 +37,7 @@ class _SignupState extends State<Signup> {
   final TextEditingController _controllerMiddleName = TextEditingController();
   final TextEditingController _controllerLastName = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerAddress = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerConFirmPassword =
       TextEditingController();
@@ -260,11 +267,44 @@ class _SignupState extends State<Signup> {
                       Container(
                         padding: const EdgeInsets.all(5.0),
                         child: TextFormField(
-                            controller: _controllerEmail,
-                            focusNode: _focusNodeEmail,
-                            keyboardType: TextInputType.emailAddress,
+                          controller: _controllerEmail,
+                          focusNode: _focusNodeEmail,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.email_outlined,
+                                  color: Colors.grey[600]),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color(0xffE8ECF4), width: 1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color(0xffE8ECF4), width: 1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              fillColor: const Color(0xffE8ECF4),
+                              filled: true,
+                              hintText: "Email"),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter email.";
+                            } else if (!(value.contains('@') &&
+                                value.contains('.'))) {
+                              return "Invalid email.";
+                            }
+                            return null;
+                          },
+                          onEditingComplete: () =>
+                              _focusNodeAddress.requestFocus(),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TextFormField(
+                            controller: _controllerAddress,
+                            focusNode: _focusNodeAddress,
+                            keyboardType: TextInputType.streetAddress,
                             decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.email_outlined,
+                                prefixIcon: Icon(Icons.house_rounded,
                                     color: Colors.grey[600]),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
@@ -276,13 +316,10 @@ class _SignupState extends State<Signup> {
                                     borderRadius: BorderRadius.circular(10)),
                                 fillColor: const Color(0xffE8ECF4),
                                 filled: true,
-                                hintText: "Email"),
+                                hintText: "Home Address"),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
-                                return "Please enter email.";
-                              } else if (!(value.contains('@') &&
-                                  value.contains('.'))) {
-                                return "Invalid email.";
+                                return "Please enter address.";
                               }
                               return null;
                             }),
@@ -491,17 +528,46 @@ class _SignupState extends State<Signup> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState?.validate() ??
                                     false) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return const OTP();
-                                      },
-                                    ),
-                                  );
+                                  _boxLogin.put("phoneNumber",
+                                      _controllerPhoneNumber.text);
+                                  _boxLogin.put(
+                                      "password", _controllerPassword.text);
+                                  _boxLogin.put(
+                                      "bloodGroup", _selectedBloodGroup);
+                                  _boxLogin.put(
+                                      "fname", _controllerFirstName.text);
+                                  _boxLogin.put(
+                                      "mname", _controllerMiddleName.text);
+                                  _boxLogin.put(
+                                      "lname", _controllerLastName.text);
+                                  _boxLogin.put("gender", _selectedGender);
+                                  _boxLogin.put(
+                                      "address", _controllerAddress.text);
+                                  _boxLogin.put(
+                                      "birthDate", birthDate.toString());
+                                  _boxLogin.put("email", _controllerEmail.text);
+                                  bool apiResponse = await ApiService().sendSms(
+                                      _controllerPhoneNumber.text,
+                                      generateOTP());
+                                  if (apiResponse == true) {
+                                    if (!mounted) return;
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return const OTP();
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    setState(() {
+                                      errorMessage =
+                                          "Something went wrong. Please try again later.";
+                                    });
+                                  }
                                 }
                               },
                               child: const Text("Next",

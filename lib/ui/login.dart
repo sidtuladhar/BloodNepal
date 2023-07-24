@@ -15,6 +15,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  final Box _boxLogin = Hive.box("login");
 
   final FocusNode _focusNodePassword = FocusNode();
   final TextEditingController _controllerPhoneNumber = TextEditingController();
@@ -22,7 +23,6 @@ class _LoginState extends State<Login> {
 
   bool _obscurePassword = true;
   String errorMessage = '';
-  final Box _boxLogin = Hive.box("login");
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +171,6 @@ class _LoginState extends State<Login> {
                                           _controllerPassword.text,
                                         );
                                         if (loginInfo["success"] == true) {
-                                          errorMessage = "";
                                           _boxLogin.put("loginStatus", true);
                                           _boxLogin.put("phoneNumber",
                                               _controllerPhoneNumber.text);

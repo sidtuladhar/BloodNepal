@@ -168,4 +168,89 @@ class ApiService {
       return false;
     }
   }
+
+  Future<bool> sendSms(String phoneNumber, String message) async {
+    final url = Uri.parse("http://10.0.2.2:8000/api/sendSms");
+
+    try {
+      var response = await post(url,
+          body: {"phoneNumber": phoneNumber, "message": message});
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        String status = responseData['data']['data'][0]['status'];
+
+        return status == 'OK';
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        return false;
+      }
+    } catch (error) {
+      print('The error is $error');
+      return false;
+    }
+  }
+
+  Future<bool> verifyPhoneNumber(String phoneNumber, String message) async {
+    final url = Uri.parse("http://10.0.2.2:8000/api/verifyPhoneNumber?"
+        "phoneNumber=$phoneNumber&"
+        "message=$message");
+
+    try {
+      var response = await get(url);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData["success"];
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        return false;
+      }
+    } catch (error) {
+      print('The error is $error');
+      return false;
+    }
+  }
+
+  Future<bool> register(
+      String fname,
+      String? mname,
+      String lname,
+      String email,
+      String address,
+      String phoneNumber,
+      String password,
+      String birthDate,
+      String bloodGroup,
+      String gender,
+      int diabetes) async {
+    final url = Uri.parse("http://10.0.2.2:8000/api/register");
+    mname ??= "";
+
+    try {
+      final response = await post(url, body: {
+        "phoneNumber": phoneNumber,
+        "fname": fname,
+        "mname": mname,
+        "lname": lname,
+        "address": address,
+        "gender": gender,
+        "password": password,
+        "diabetes": diabetes.toString(),
+        "birthDate": birthDate,
+        "email": email,
+        "bloodGroup": bloodGroup,
+      });
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print(responseData);
+        return responseData["success"];
+      } else {
+        print('Request failed with status: ${response.statusCode}. '
+            'The error is ${response.body}');
+        return false;
+      }
+    } catch (error) {
+      print('The error is $error');
+      return false;
+    }
+  }
 }
