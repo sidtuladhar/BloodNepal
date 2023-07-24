@@ -37,7 +37,7 @@ class _SettingsState extends State<Settings> {
     controllerbloodGroup.text = boxLogin.get("bloodGroup");
     controllerEmail.text = boxLogin.get("email");
     controllerAddress.text = boxLogin.get("address");
-    controllerBirthDate.text = boxLogin.get("birthDate");
+    controllerBirthDate.text = boxLogin.get("birthDate").substring(0, 10);
 
     String phoneNumber = boxLogin.get("phoneNumber").toString();
 
@@ -216,7 +216,7 @@ class _SettingsState extends State<Settings> {
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter your date of birth.";
-                    } else if (!(value.contains('-'))) {
+                    } else if (!(value.contains('-')) || value.length != 10) {
                       return "Invalid date of birth.";
                     }
                     return null;
