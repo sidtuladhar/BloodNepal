@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:blood_nepal/api.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 
 class BloodPressure extends StatefulWidget {
@@ -13,36 +14,6 @@ class BloodPressure extends StatefulWidget {
 class _BloodPressureState extends State<BloodPressure> {
   ApiService apiService = ApiService();
   final Box _boxLogin = Hive.box("login");
-
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    Widget text;
-    switch (value.toInt()) {
-      case 1:
-        text = const Text('JAN\n2023', style: style);
-        break;
-      case 5:
-        text = const Text('MAY\n2023', style: style);
-        break;
-      case 8:
-        text = const Text('AUG\n2023', style: style);
-        break;
-      case 12:
-        text = const Text('DEC\n2023', style: style);
-        break;
-      default:
-        text = const Text('');
-        break;
-    }
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      space: 10,
-      child: text,
-    );
-  }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
@@ -106,7 +77,20 @@ class _BloodPressureState extends State<BloodPressure> {
             final jsonData = snapshot.data as List<dynamic>;
             List<FlSpot> upperSpots = [];
             List<FlSpot> lowerSpots = [];
-
+            if (jsonData.isEmpty) {
+              return Center(
+                  child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  const Text("No blood pressure data available.",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 30),
+                  Icon(FontAwesomeIcons.circleExclamation,
+                      color: Colors.red[800], size: 50)
+                ],
+              ));
+            }
             int maxYearInteger =
                 int.parse(jsonData[0]["donationDate"].substring(0, 4));
             int minYearInteger = int.parse(
