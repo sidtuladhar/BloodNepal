@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:blood_nepal/ui/home/home.dart';
 import 'package:blood_nepal/api.dart';
-import 'package:blood_nepal/ui/widgets/buildList.dart';
+import 'package:blood_nepal/ui/widgets/build_leaderboard.dart';
 
 class Leaderboard extends StatefulWidget {
   const Leaderboard({super.key});
@@ -25,7 +25,7 @@ class _LeaderboardState extends State<Leaderboard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return Home();
+                    return const Home();
                   },
                 ),
               );

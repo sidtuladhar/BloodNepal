@@ -253,4 +253,24 @@ class ApiService {
       return false;
     }
   }
+
+  Future<List> getOrganizations(double latitude, double longitude) async {
+    final url = Uri.parse("http://10.0.2.2:8000/api/getOrganizations?latitude="
+        "$latitude&longitude=$longitude");
+
+    try {
+      final response = await get(url);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print(responseData);
+        return responseData;
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        return [];
+      }
+    } catch (error) {
+      print('The error is $error');
+      return [];
+    }
+  }
 }

@@ -17,31 +17,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Position? currentPosition;
+  late Future<Position> currentLocation;
   final Box boxLogin = Hive.box("login");
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
-  }
-
-  Future<void> _getCurrentLocation() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      await Geolocator.requestPermission();
-    } else if (permission == LocationPermission.whileInUse ||
-        permission == LocationPermission.always) {
-      try {
-        Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
-        currentPosition = position;
-      } catch (e) {
-        print("Error: $e");
-        // Handle error cases here
-      }
-    }
+    currentLocation = _determinePosition();
   }
 
   @override
@@ -50,7 +32,6 @@ class _HomeState extends State<Home> {
     String lastName = boxLogin.get("lname");
     final String? bloodGroup = boxLogin.get("bloodGroup");
     final int totalDonations = boxLogin.get("totalDonations");
-    String currentPos = currentPosition.toString();
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -133,7 +114,20 @@ class _HomeState extends State<Home> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-                getAppointment(currentPos),
+                FutureBuilder<Position>(
+                    future: currentLocation,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        boxLogin.put("latitude", snapshot.data!.latitude);
+                        boxLogin.put("longitude", snapshot.data!.longitude);
+                        return dashboard(
+                            "Longitude: ${snapshot.data!.longitude}\n"
+                            "Latitude: ${snapshot.data!.latitude}");
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    }),
                 const SizedBox(height: 20),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -166,6 +160,43 @@ class _HomeState extends State<Home> {
           ),
           // const SizedBox(height: 10),
         ])));
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
   }
 }
 
@@ -202,7 +233,7 @@ homeButton(String text, context, target, IconData icon) {
       ));
 }
 
-Widget getAppointment(String text) {
+Widget dashboard(String text) {
   return Container(
     width: double.infinity,
     height: 150,
