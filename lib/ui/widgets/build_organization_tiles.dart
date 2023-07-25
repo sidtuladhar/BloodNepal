@@ -176,15 +176,17 @@ Widget buildOrganizationTiles(
                                     ],
                                   ),
                                 ),
-                              SizedBox(
+                              Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
                                   height:
-                                      MediaQuery.of(context).size.height * 0.2,
+                                      MediaQuery.of(context).size.height * 0.3,
                                   width:
-                                      MediaQuery.of(context).size.width * 0.2,
+                                      MediaQuery.of(context).size.width * 0.9,
                                   child: GoogleMap(
                                     initialCameraPosition: CameraPosition(
                                       target: LatLng(latitude, longitude),
-                                      zoom: 15,
+                                      zoom: 12,
                                     ),
                                     markers: {
                                       Marker(
