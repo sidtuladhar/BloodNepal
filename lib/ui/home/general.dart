@@ -29,15 +29,13 @@ class _GeneralState extends State<General> {
               icon: const Icon(Icons.arrow_back_ios_new_outlined, size: 30),
             ),
             toolbarHeight: 85,
-            title: Container(
-              child: const Text("General Information",
-                  style: TextStyle(
-                      fontSize: 28,
-                      letterSpacing: 1.2,
-                      height: 1.2,
-                      fontFamily: "Rubik"),
-                  textAlign: TextAlign.left),
-            )),
+            title: const Text("General Information",
+                style: TextStyle(
+                    fontSize: 28,
+                    letterSpacing: 1.2,
+                    height: 1.2,
+                    fontFamily: "Rubik"),
+                textAlign: TextAlign.left)),
         body: SingleChildScrollView(
           child: Column(children: <Widget>[
             const SizedBox(height: 10),

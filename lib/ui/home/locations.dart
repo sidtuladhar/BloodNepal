@@ -4,6 +4,7 @@ import 'package:blood_nepal/api.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Locations extends StatefulWidget {
   const Locations({super.key});
@@ -20,6 +21,7 @@ class _LocationsState extends State<Locations> {
   Widget build(BuildContext context) {
     double latitude = boxLogin.get("latitude");
     double longitude = boxLogin.get("longitude");
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -49,16 +51,35 @@ class _LocationsState extends State<Locations> {
             future: apiService.getOrganizations(latitude, longitude),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return const Center(
+                    child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.0),
+                  child: CircularProgressIndicator(),
+                ));
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (snapshot.hasData) {
-                final leaderboardData = snapshot.data as List;
+                final organizationData = snapshot.data as List;
+                if (latitude == 0) {
+                  return Center(
+                      child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      const Text(
+                          "Please turn on your location to view blood banks near you.",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 30),
+                      Icon(FontAwesomeIcons.circleExclamation,
+                          color: Colors.red[800], size: 50)
+                    ],
+                  ));
+                }
 
                 return ListView.builder(
-                  itemCount: leaderboardData.length,
+                  itemCount: organizationData.length,
                   itemBuilder: (BuildContext context, int index) =>
-                      buildOrganizationTiles(context, index, leaderboardData),
+                      buildOrganizationTiles(context, index, organizationData),
                 );
               } else {
                 return const Text('No data available');

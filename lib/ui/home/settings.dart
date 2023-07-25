@@ -51,7 +51,7 @@ class _SettingsState extends State<Settings> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return Home();
+                    return const Home();
                   },
                 ),
               );
@@ -188,7 +188,7 @@ class _SettingsState extends State<Settings> {
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(bottom: 3),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      labelText: 'Phone number',
+                      labelText: 'Mobile number',
                       hintText: phoneNumber,
                       hintStyle: TextStyle(
                         fontFamily: "Rubik",

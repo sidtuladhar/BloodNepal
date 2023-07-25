@@ -118,15 +118,26 @@ class _HomeState extends State<Home> {
                     future: currentLocation,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        boxLogin.put("latitude", snapshot.data!.latitude);
-                        boxLogin.put("longitude", snapshot.data!.longitude);
-                        return dashboard(
-                            "Longitude: ${snapshot.data!.longitude}\n"
-                            "Latitude: ${snapshot.data!.latitude}");
+                        if (snapshot.data?.longitude != null &&
+                            snapshot.data?.latitude != null) {
+                          boxLogin.put("latitude", snapshot.data!.latitude);
+                          boxLogin.put("longitude", snapshot.data!.longitude);
+                          return dashboard(
+                              "Longitude: ${snapshot.data!.longitude}\n"
+                              "Latitude: ${snapshot.data!.latitude}");
+                        } else {
+                          boxLogin.put("latitude", 0);
+                          boxLogin.put("longitude", 0);
+                          return dashboard("Location not found.");
+                        }
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 57.0),
+                        child: CircularProgressIndicator(),
+                      ));
                     }),
                 const SizedBox(height: 20),
                 Row(
