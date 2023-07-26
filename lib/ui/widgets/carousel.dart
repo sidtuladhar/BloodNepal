@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:blood_nepal/api.dart';
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -12,7 +13,16 @@ final List<String> imgList = [
 
 Widget carousel(context) {
   return Container(
-      margin: const EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Theme.of(context).dividerColor,
+                Theme.of(context).disabledColor,
+              ])),
+      margin: const EdgeInsets.only(top: 5),
       child: CarouselSlider(
         options: CarouselOptions(
           height: 150,
@@ -21,15 +31,16 @@ Widget carousel(context) {
           autoPlayAnimationDuration: const Duration(milliseconds: 800),
           autoPlayCurve: Curves.fastOutSlowIn,
           pauseAutoPlayOnTouch: true,
-          aspectRatio: 0,
+          reverse: true,
           onPageChanged: (index, reason) {},
         ),
         items: imgList
             .map((item) => Center(
                     child: Image.network(
                   item,
-                  fit: BoxFit.fill,
-                  width: MediaQuery.of(context).size.width * 0.7,
+                  fit: BoxFit.fitHeight,
+                  width: MediaQuery.of(context).size.width * 0.53,
+                  height: MediaQuery.of(context).size.height * 0.3,
                 )))
             .toList(),
       ));
