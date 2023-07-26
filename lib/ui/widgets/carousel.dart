@@ -10,26 +10,27 @@ final List<String> imgList = [
   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
 ];
 
-Widget carousel() {
+Widget carousel(context) {
   return Container(
       margin: const EdgeInsets.only(top: 10),
       child: CarouselSlider(
         options: CarouselOptions(
-          height: 140,
+          height: 150,
           autoPlay: true,
-          autoPlayInterval: const Duration(seconds: 3),
+          autoPlayInterval: const Duration(seconds: 5),
           autoPlayAnimationDuration: const Duration(milliseconds: 800),
           autoPlayCurve: Curves.fastOutSlowIn,
           pauseAutoPlayOnTouch: true,
-          aspectRatio: 2.0,
+          aspectRatio: 0,
           onPageChanged: (index, reason) {},
         ),
         items: imgList
-            .map((item) => Container(
-                  child: Center(
-                      child:
-                          Image.network(item, fit: BoxFit.cover, width: 200)),
-                ))
+            .map((item) => Center(
+                    child: Image.network(
+                  item,
+                  fit: BoxFit.fill,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                )))
             .toList(),
       ));
 }

@@ -135,7 +135,7 @@ class _HomeState extends State<Home> {
                           boxLogin.put("latitude", 0);
                           boxLogin.put("longitude", 0);
                         }
-                        return carousel();
+                        return carousel(context);
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
