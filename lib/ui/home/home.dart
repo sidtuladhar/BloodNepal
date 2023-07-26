@@ -29,7 +29,15 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     String firstName = boxLogin.get("fname");
+    int firstNameLength = firstName.length;
+    if (firstNameLength > 13) {
+      firstName = firstName.substring(0, 13);
+    }
     String lastName = boxLogin.get("lname");
+    int lastNameLength = lastName.length;
+    if (lastNameLength > 13) {
+      lastName = lastName.substring(0, 13);
+    }
     final String? bloodGroup = boxLogin.get("bloodGroup");
     final int totalDonations = boxLogin.get("totalDonations");
 

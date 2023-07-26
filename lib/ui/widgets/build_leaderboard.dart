@@ -10,9 +10,25 @@ Widget buildList(BuildContext context, int index, List leaderboardData) {
   } else {
     leftPadding = 39;
   }
+  String firstName = leaderboardData[index]['fname'];
+  int firstNameLength = firstName.length;
 
+  String lastName = leaderboardData[index]['lname'];
+  int lastNameLength = lastName.length;
+  if (lastNameLength > 15) {
+    lastName = lastName.substring(0, 15);
+  }
+  String middleName = "";
   if (leaderboardData[index]['mname'] == null) {
-    leaderboardData[index]['mname'] = "";
+    if (firstNameLength > 15) {
+      firstName = firstName.substring(0, 15);
+    }
+  } else {
+    middleName = leaderboardData[index]['mname'];
+    int middleNameLength = middleName.length;
+    if (middleNameLength + firstNameLength > 14) {
+      middleName = middleName.substring(0, 1);
+    }
   }
 
   Widget crown;
@@ -90,11 +106,7 @@ Widget buildList(BuildContext context, int index, List leaderboardData) {
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0, top: 5),
                           child: Text(
-                            leaderboardData[index]['fname'] +
-                                " " +
-                                leaderboardData[index]['mname'] +
-                                "\n" +
-                                leaderboardData[index]['lname'],
+                            "$firstName $middleName\n$lastName",
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
