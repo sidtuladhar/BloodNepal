@@ -40,7 +40,7 @@ class _CarouselState extends State<Carousel> {
             child: Center(
                 child: Column(
               children: [
-                const Text("Turn on location to view upcoming events.",
+                const Text("Turn on location to view upcoming events!",
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),

@@ -1,5 +1,5 @@
+import 'package:blood_nepal/ui/widgets/appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:blood_nepal/ui/home/home.dart';
 import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
 
 class General extends StatefulWidget {
@@ -14,28 +14,7 @@ class _GeneralState extends State<General> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return Home();
-                    },
-                  ),
-                );
-              },
-              icon: const Icon(Icons.arrow_back_ios_new_outlined, size: 30),
-            ),
-            toolbarHeight: 85,
-            title: const Text("General Information",
-                style: TextStyle(
-                    fontSize: 28,
-                    letterSpacing: 1.2,
-                    height: 1.2,
-                    fontFamily: "Rubik"),
-                textAlign: TextAlign.left)),
+        appBar: appBar(context, "General Information"),
         body: SingleChildScrollView(
           child: Column(children: <Widget>[
             const SizedBox(height: 10),

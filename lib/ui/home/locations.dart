@@ -1,6 +1,6 @@
 import 'package:blood_nepal/ui/widgets/build_organization_tiles.dart';
-import 'package:blood_nepal/ui/home/home.dart';
 import 'package:blood_nepal/api.dart';
+import '../widgets/appbar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -24,29 +24,7 @@ class _LocationsState extends State<Locations> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const Home();
-                  },
-                ),
-              );
-            },
-            icon: const Icon(Icons.arrow_back_ios_new_outlined, size: 30),
-          ),
-          toolbarHeight: 85,
-          title: const Text("Blood Bank Locations",
-              style: TextStyle(
-                  fontSize: 25,
-                  letterSpacing: 1.2,
-                  height: 1.2,
-                  fontFamily: "Rubik"),
-              textAlign: TextAlign.left),
-        ),
+        appBar: appBar(context, "Blood Bank Locations"),
         body: FutureBuilder<List>(
             future: apiService.getOrganizations(latitude, longitude),
             builder: (context, snapshot) {

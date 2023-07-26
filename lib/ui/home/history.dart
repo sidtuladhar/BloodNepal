@@ -1,3 +1,4 @@
+import 'package:blood_nepal/ui/widgets/appbar.dart';
 import 'package:blood_nepal/ui/widgets/bloodpressure.dart';
 import 'package:blood_nepal/ui/widgets/pastdonations.dart';
 import 'package:flutter/material.dart';
@@ -18,29 +19,7 @@ class _HistoryState extends State<History> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.red[50],
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return Home();
-                },
-              ),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new_outlined, size: 30),
-        ),
-        toolbarHeight: 85,
-        title: const Text("Donation History",
-            style: TextStyle(
-                fontSize: 28,
-                letterSpacing: 1.2,
-                height: 1.2,
-                fontFamily: "Rubik"),
-            textAlign: TextAlign.left),
-      ),
+      appBar: appBar(context, "Donation History"),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
