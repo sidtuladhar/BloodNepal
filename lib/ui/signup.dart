@@ -596,7 +596,12 @@ class _SignupState extends State<Signup> {
     _focusNodeEmail.dispose();
     _focusNodePassword.dispose();
     _focusNodeConfirmPassword.dispose();
+    _focusNodeAddress.dispose();
+    _focusNodeFirstName.dispose();
+    _focusNodeMiddleName.dispose();
+    _focusNodeLastName.dispose();
     _controllerPhoneNumber.dispose();
+    _controllerAddress.dispose();
     _controllerFirstName.dispose();
     _controllerMiddleName.dispose();
     _controllerLastName.dispose();

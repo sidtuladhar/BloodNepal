@@ -156,8 +156,8 @@ class ApiService {
         "address": address,
         "needByDate": needByDate.toString(),
       });
+      final responseData = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
         return responseData['success'];
       } else {
         print('Request failed with status: ${response.statusCode}');
@@ -173,10 +173,13 @@ class ApiService {
     final url = Uri.parse("http://10.0.2.2:8000/api/sendSms");
 
     try {
+      print('sending OTP...');
       var response = await post(url,
           body: {"phoneNumber": phoneNumber, "message": message});
+      print('request returned');
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
+        print(responseData);
         String status = responseData['data']['data'][0]['status'];
 
         return status == 'OK';
@@ -210,7 +213,7 @@ class ApiService {
     }
   }
 
-  Future<bool> register(
+  Future<Map> register(
       String fname,
       String? mname,
       String lname,
@@ -239,18 +242,18 @@ class ApiService {
         "email": email,
         "bloodGroup": bloodGroup,
       });
+      final responseData = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
         print(responseData);
-        return responseData["success"];
+        return responseData;
       } else {
         print('Request failed with status: ${response.statusCode}. '
             'The error is ${response.body}');
-        return false;
+        return responseData;
       }
     } catch (error) {
       print('The error is $error');
-      return false;
+      return {'success': false, 'error': 'Something went wrong'};
     }
   }
 

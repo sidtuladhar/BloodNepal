@@ -1,3 +1,4 @@
+import 'package:blood_nepal/ui/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:hive/hive.dart';
@@ -51,7 +52,7 @@ class _OTPState extends State<OTP> {
               Align(
                 alignment: Alignment.center,
                 child: Padding(
-                  padding: EdgeInsets.only(top: screenHeight / 8),
+                  padding: EdgeInsets.only(top: screenHeight / 10),
                   child: Column(
                     children: [
                       Text(
@@ -95,7 +96,7 @@ class _OTPState extends State<OTP> {
                       top: bottom > 0 ? screenHeight / 12 : 0,
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         stateOTP(),
                         GestureDetector(
@@ -107,7 +108,7 @@ class _OTPState extends State<OTP> {
                                       otpPin);
 
                               if (verified == true) {
-                                bool register = await ApiService().register(
+                                Map register = await ApiService().register(
                                     boxLogin.get("fname"),
                                     boxLogin.get("mname"),
                                     boxLogin.get("lname"),
@@ -120,18 +121,21 @@ class _OTPState extends State<OTP> {
                                     boxLogin.get("gender"),
                                     0);
                                 boxLogin.put("totalDonations", 0);
-                                if (register == true) {
+                                if (register["success"] == true) {
                                   if (!mounted) return;
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
-                                        return Home();
+                                        return const Home();
                                       },
                                     ),
                                   );
-                                } else {
-                                  showSnackBarText("Registration failed");
+                                } else if (register["success"] == false &&
+                                    register["error"] ==
+                                        "User already exists") {
+                                  showSnackBarText(
+                                      "Donor already exists. Please use a different phone number to register.");
                                 }
                               } else {
                                 showSnackBarText("Invalid OTP");
@@ -162,6 +166,41 @@ class _OTPState extends State<OTP> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const Signup();
+                        },
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 50,
+                    width: screenWidth / 3,
+                    margin: EdgeInsets.only(bottom: screenHeight / 14),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Go Back",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
                   ),
                 ),
