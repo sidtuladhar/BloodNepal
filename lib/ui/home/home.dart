@@ -44,6 +44,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
         backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           shape: ShapeBorder.lerp(
               RoundedRectangleBorder(
@@ -109,74 +110,78 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        body: Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 20),
-                const Text(
-                  'Upcoming Events',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                FutureBuilder<Position>(
-                    future: currentLocation,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data?.longitude != null &&
-                            snapshot.data?.latitude != null) {
-                          boxLogin.put("latitude", snapshot.data!.latitude);
-                          boxLogin.put("longitude", snapshot.data!.longitude);
-                        } else {
-                          boxLogin.put("latitude", 0);
-                          boxLogin.put("longitude", 0);
+        body: SingleChildScrollView(
+          child: Center(
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Upcoming Events',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  FutureBuilder<Position>(
+                      future: currentLocation,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data?.longitude != null &&
+                              snapshot.data?.latitude != null) {
+                            boxLogin.put("latitude", snapshot.data!.latitude);
+                            boxLogin.put("longitude", snapshot.data!.longitude);
+                          } else {
+                            boxLogin.put("latitude", 0);
+                            boxLogin.put("longitude", 0);
+                          }
+                          print(boxLogin.get("latitude"));
+                          print(boxLogin.get("longitude"));
+                          return const Carousel();
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
                         }
-                        return carousel(context);
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const Center(
-                          child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 57.0),
-                        child: CircularProgressIndicator(),
-                      ));
-                    }),
-                const SizedBox(height: 20),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      homeButton("Blood Bank Locations", context,
-                          const Locations(), Icons.location_on),
-                      homeButton("Donation History", context, const History(),
-                          Icons.article),
-                    ]),
-                const SizedBox(height: 20),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      homeButton("Leaderboard", context, const Leaderboard(),
-                          Icons.leaderboard),
-                      homeButton("Request Blood", context, const Requests(),
-                          Icons.handshake_rounded),
-                    ]),
-                const SizedBox(height: 20),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      homeButton(
-                          "General Info", context, const General(), Icons.info),
-                      homeButton("Settings", context, const Settings(),
-                          Icons.settings),
-                    ])
-              ],
+                        return const Center(
+                            child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 57.0),
+                          child: CircularProgressIndicator(),
+                        ));
+                      }),
+                  const SizedBox(height: 20),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        homeButton("Blood Bank Locations", context,
+                            const Locations(), Icons.location_on),
+                        homeButton("Donation History", context, const History(),
+                            Icons.article),
+                      ]),
+                  const SizedBox(height: 20),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        homeButton("Leaderboard", context, const Leaderboard(),
+                            Icons.leaderboard),
+                        homeButton("Request Blood", context, const Requests(),
+                            Icons.handshake_rounded),
+                      ]),
+                  const SizedBox(height: 20),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        homeButton("General Info", context, const General(),
+                            Icons.info),
+                        homeButton("Settings", context, const Settings(),
+                            Icons.settings),
+                      ])
+                ],
+              ),
             ),
-          ),
-          // const SizedBox(height: 10),
-        ])));
+            // const SizedBox(height: 10),
+          ])),
+        ));
   }
 
   Future<Position> _determinePosition() async {

@@ -1,47 +1,142 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:blood_nepal/api.dart';
 
-final List<String> imgList = [
-  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
-];
+class Carousel extends StatefulWidget {
+  const Carousel({Key? key}) : super(key: key);
 
-Widget carousel(context) {
-  return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Theme.of(context).dividerColor,
-                Theme.of(context).disabledColor,
-              ])),
-      margin: const EdgeInsets.only(top: 5),
-      child: CarouselSlider(
-        options: CarouselOptions(
+  @override
+  State<Carousel> createState() => _CarouselState();
+}
+
+class _CarouselState extends State<Carousel> {
+  final Box boxLogin = Hive.box("login");
+  final ApiService apiService = ApiService();
+
+  final List<String> imgList = [];
+
+  @override
+  Widget build(BuildContext context) {
+    final double latitude = boxLogin.get("latitude");
+    final double longitude = boxLogin.get("longitude");
+
+    if (latitude == 0) {
+      return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Theme.of(context).dividerColor,
+                    Theme.of(context).disabledColor,
+                  ])),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            height: 150,
+            child: Center(
+                child: Column(
+              children: [
+                const Text("Turn on location to view upcoming events.",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                Icon(FontAwesomeIcons.circleExclamation,
+                    color: Colors.red[800], size: 50)
+              ],
+            )),
+          ));
+    } else {
+      FutureBuilder<List>(
+          future: apiService.getEvents(latitude, longitude),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                  child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: CircularProgressIndicator(),
+              ));
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              final events = snapshot.data as List;
+              for (int i = 0; i < events.length; i++) {
+                imgList.add(events[i]["picture"]);
+              }
+              return carousel(context, imgList);
+            } else {
+              return Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Theme.of(context).dividerColor,
+                          Theme.of(context).disabledColor,
+                        ])),
+                child: const Center(child: CircularProgressIndicator()),
+              );
+            }
+          });
+    }
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme.of(context).dividerColor,
+                  Theme.of(context).disabledColor,
+                ])),
+        child: Container(
+          padding: const EdgeInsets.all(15),
           height: 150,
-          autoPlay: true,
-          autoPlayInterval: const Duration(seconds: 5),
-          autoPlayAnimationDuration: const Duration(milliseconds: 800),
-          autoPlayCurve: Curves.fastOutSlowIn,
-          pauseAutoPlayOnTouch: true,
-          reverse: true,
-          onPageChanged: (index, reason) {},
-        ),
-        items: imgList
-            .map((item) => Center(
-                    child: Image.network(
-                  item,
-                  fit: BoxFit.fitHeight,
-                  width: MediaQuery.of(context).size.width * 0.53,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                )))
-            .toList(),
-      ));
+          child: const Center(
+              child: Column(
+            children: [
+              Text("There are no upcoming events.",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+            ],
+          )),
+        ));
+  }
+
+  Widget carousel(context, List imgList) {
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme.of(context).dividerColor,
+                  Theme.of(context).disabledColor,
+                ])),
+        margin: const EdgeInsets.only(top: 5),
+        child: CarouselSlider(
+          options: CarouselOptions(
+            height: 150,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 5),
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            pauseAutoPlayOnTouch: true,
+            onPageChanged: (index, reason) {},
+          ),
+          items: imgList
+              .map((item) => Center(
+                      child: Image.network(
+                    item,
+                    fit: BoxFit.fitHeight,
+                    width: MediaQuery.of(context).size.width * 0.53,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                  )))
+              .toList(),
+        ));
+  }
 }

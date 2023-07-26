@@ -269,11 +269,11 @@ class ApiService {
         return responseData;
       } else {
         print('Request failed with status: ${response.statusCode}');
-        return [];
+        return ['error'];
       }
     } catch (error) {
       print('The error is $error');
-      return [];
+      return ['error'];
     }
   }
 
@@ -289,10 +289,11 @@ class ApiService {
         return responseData;
       } else {
         print('Request failed with status: ${response.statusCode}');
-        return [];
+        return ['error'];
       }
     } catch (error) {
       print('The error is $error');
-      return [];
+      return ['error'];
     }
+  }
 }
