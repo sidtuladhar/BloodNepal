@@ -4,6 +4,7 @@ import 'package:blood_nepal/ui/home/general.dart';
 import 'package:blood_nepal/ui/home/leaderboard.dart';
 import 'package:blood_nepal/ui/home/requests.dart';
 import 'package:blood_nepal/ui/home/locations.dart';
+import 'package:blood_nepal/ui/widgets/carousel.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -130,14 +131,11 @@ class _HomeState extends State<Home> {
                             snapshot.data?.latitude != null) {
                           boxLogin.put("latitude", snapshot.data!.latitude);
                           boxLogin.put("longitude", snapshot.data!.longitude);
-                          return dashboard(
-                              "Longitude: ${snapshot.data!.longitude}\n"
-                              "Latitude: ${snapshot.data!.latitude}");
                         } else {
                           boxLogin.put("latitude", 0);
                           boxLogin.put("longitude", 0);
-                          return dashboard("Location not found.");
                         }
+                        return carousel();
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
@@ -250,17 +248,4 @@ homeButton(String text, context, target, IconData icon) {
           ),
         ],
       ));
-}
-
-Widget dashboard(String text) {
-  return Container(
-    width: double.infinity,
-    height: 150,
-    decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey, width: .1)),
-    padding: const EdgeInsets.all(18),
-    child: Text(text, style: const TextStyle(fontSize: 18)),
-  );
 }
