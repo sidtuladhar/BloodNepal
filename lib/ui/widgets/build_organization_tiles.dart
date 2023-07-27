@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,13 +9,23 @@ Widget buildOrganizationTiles(
     BuildContext context, int index, List organizationData) {
   double latitude = double.parse(organizationData[index]['latitude']);
   double longitude = double.parse(organizationData[index]['longitude']);
+  String name = organizationData[index]['name'];
 
   Widget logo;
   if (organizationData[index]['logo'] != null) {
+    String base64Image = organizationData[index]["logo"];
+    Uint8List bytes = base64Decode(
+        base64Image.replaceAll(RegExp(r'data:image/\w+;base64,'), ''));
+    ImageProvider imageProvider = MemoryImage(bytes);
     logo = CircleAvatar(
         backgroundColor: Colors.grey,
         radius: 25,
-        backgroundImage: NetworkImage(organizationData[index]['logo']));
+        child: ClipOval(
+          child: Image(
+            image: imageProvider,
+            fit: BoxFit.fill,
+          ),
+        ));
   } else {
     logo = const CircleAvatar(
         backgroundColor: Colors.grey,
