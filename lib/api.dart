@@ -285,7 +285,6 @@ class ApiService {
       final response = await get(url);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        print(responseData);
         return responseData;
       } else {
         print('Request failed with status: ${response.statusCode}');
