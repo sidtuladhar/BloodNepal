@@ -1,10 +1,8 @@
-import 'package:blood_nepal/ui/widgets/build_organization_tiles.dart';
-import 'package:blood_nepal/api.dart';
+import 'package:blood_nepal/ui/widgets/bloodbanks.dart';
+import 'package:blood_nepal/ui/widgets/events.dart';
 import '../widgets/appbar.dart';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Locations extends StatefulWidget {
   const Locations({super.key});
@@ -14,54 +12,90 @@ class Locations extends StatefulWidget {
 }
 
 class _LocationsState extends State<Locations> {
-  ApiService apiService = ApiService();
-  final Box boxLogin = Hive.box("login");
+  var selectedTab = 1;
 
   @override
   Widget build(BuildContext context) {
-    double latitude = boxLogin.get("latitude");
-    double longitude = boxLogin.get("longitude");
-
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: appBar(context, "Blood Bank Locations"),
-        body: FutureBuilder<List>(
-            future: apiService.getOrganizations(latitude, longitude),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                    child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0),
-                  child: CircularProgressIndicator(),
-                ));
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (snapshot.hasData) {
-                final organizationData = snapshot.data as List;
-                if (latitude == 0) {
-                  return Center(
-                      child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      const Text(
-                          "Please turn on your location to view blood banks near you.",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 30),
-                      Icon(FontAwesomeIcons.circleExclamation,
-                          color: Colors.red[800], size: 50)
-                    ],
-                  ));
-                }
-
-                return ListView.builder(
-                  itemCount: organizationData.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      buildOrganizationTiles(context, index, organizationData),
-                );
-              } else {
-                return const Text('No data available');
-              }
-            }));
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      appBar: appBar(context, "Blood Banks & Events"),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 1.2,
+              height: MediaQuery.of(context).size.height * .05,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * .4,
+                    decoration: BoxDecoration(
+                      color:
+                          selectedTab == 1 ? Colors.red[100] : Colors.red[50],
+                      borderRadius: const BorderRadius.horizontal(
+                        left: Radius.circular(20),
+                      ),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedTab = 1;
+                        });
+                      },
+                      child: Text(
+                        "Blood Banks",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: selectedTab == 1
+                                ? FontWeight.bold
+                                : FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * .4,
+                    decoration: BoxDecoration(
+                        color:
+                            selectedTab == 2 ? Colors.red[100] : Colors.red[50],
+                        borderRadius: const BorderRadius.horizontal(
+                          right: Radius.circular(20),
+                        )),
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedTab = 2;
+                        });
+                      },
+                      child: Text(
+                        "Upcoming Events",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: selectedTab == 2
+                                ? FontWeight.bold
+                                : FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * .01),
+          if (selectedTab == 1) ...[
+            const BloodBanks(), // Widget to show when the condition is true
+          ] else ...[
+            const Events(), // Widget to show when the condition is false
+          ],
+        ],
+      ),
+    );
   }
 }

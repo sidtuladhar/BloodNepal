@@ -29,7 +29,7 @@ class _LoginState extends State<Login> {
     _boxLogin.put("loginStatus", false);
 
     if (_boxLogin.get("loginStatus") ?? false) {
-      return Home();
+      return const Home();
     }
 
     return Scaffold(
@@ -253,7 +253,7 @@ class _LoginState extends State<Login> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => Home(),
+          builder: (_) => const Home(),
         ),
       );
     });

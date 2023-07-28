@@ -137,8 +137,6 @@ class _HomeState extends State<Home> {
                             boxLogin.put("latitude", 0);
                             boxLogin.put("longitude", 0);
                           }
-                          print(boxLogin.get("latitude"));
-                          print(boxLogin.get("longitude"));
                           return const Carousel();
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
@@ -153,7 +151,7 @@ class _HomeState extends State<Home> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        homeButton("Blood Bank Locations", context,
+                        homeButton("Blood Bank \n& Events", context,
                             const Locations(), Icons.location_on),
                         homeButton("Donation History", context, const History(),
                             Icons.article),
